@@ -230,7 +230,7 @@ String toPascalCase(String text) {
 Map<String, String> _readConfig() {
   final configFile = File(configFilePath);
   if (!configFile.existsSync()) {
-    print('⚠️ Config file not found at $configFilePath. Using empty config.');
+   // print('⚠️ Config file not found at $configFilePath. Using empty config.');
     return {};
   }
   try {
