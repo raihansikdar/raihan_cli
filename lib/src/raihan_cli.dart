@@ -211,13 +211,32 @@ Map<String, String> _readConfig() {
 }
 
 // Overwrites existing config file with updated key-value map
+// void _saveConfig(Map<String, String> config) {
+//   final buffer = StringBuffer();
+//   config.forEach((key, value) {
+//     buffer.writeln('$key=$value');
+//   });
+//   File(configFilePath).writeAsStringSync(buffer.toString());
+// }
+
+
 void _saveConfig(Map<String, String> config) {
+  final configFile = File(configFilePath);
+  final configDir = configFile.parent;
+
+  if (!configDir.existsSync()) {
+    configDir.createSync(recursive: true); // ✅ Ensure the 'tool' folder exists
+  }
+
   final buffer = StringBuffer();
   config.forEach((key, value) {
     buffer.writeln('$key=$value');
   });
-  File(configFilePath).writeAsStringSync(buffer.toString());
+
+  configFile.writeAsStringSync(buffer.toString());
 }
+
+
 
 
 
@@ -229,3 +248,4 @@ void _saveConfig(Map<String, String> config) {
 // --------------------->> dart pub global deactivate raihan_cli
 // --------------------->> which raihan_cli  # (macOS/Linux)
 // --------------------->> where raihan_cli  # (Windows)
+// --------------------->> dart pub global activate --source git https://github.com/raihansikdar/raihan_cli.git
