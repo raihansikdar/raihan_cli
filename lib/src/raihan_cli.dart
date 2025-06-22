@@ -25,6 +25,11 @@ void runCli(List<String> args) async {
     if (pathType == '2') {
       stdout.write('📁 Enter custom parent path (e.g., "core" for lib/core/$feature, or "." for lib/$feature): ');
       customParent = stdin.readLineSync()?.trim() ?? '';
+      // Validate customParent path
+      if (!_isValidPath(customParent)) {
+        print('❌ Invalid custom parent path. Use letters, numbers, underscores, or ".". Aborting.');
+        return;
+      }
     }
 
     try {
@@ -106,7 +111,7 @@ void runCli(List<String> args) async {
       print('\n♻️ Created folder "$basePath"');
       createdAnything = true;
     } else {
-      print('♻️ Folder "$basePath" already exists');
+      print('\n♻️ Folder "$basePath" already exists');
     }
   } catch (e) {
     print('❌ Failed to create folder "$basePath": $e');
@@ -230,7 +235,7 @@ String toPascalCase(String text) {
 Map<String, String> _readConfig() {
   final configFile = File(configFilePath);
   if (!configFile.existsSync()) {
-   // print('⚠️ Config file not found at $configFilePath. Using empty config.');
+    // print('⚠️ Config file not found at $configFilePath. Using empty config.');
     return {};
   }
   try {
@@ -263,10 +268,18 @@ void _saveConfig(Map<String, String> config) {
       buffer.writeln('$key=$value');
     });
     configFile.writeAsStringSync(buffer.toString());
-    //print('✅ Saved configuration to $configFilePath');
+    // print('✅ Saved configuration to $configFilePath');
   } catch (e) {
     throw Exception('Failed to save config to $configFilePath: $e');
   }
+}
+
+// Validates the custom parent path
+bool _isValidPath(String? path) {
+  if (path == null || path.isEmpty || path == '.') return true;
+  // Allow letters, numbers, underscores, and forward slashes
+  final validPathRegExp = RegExp(r'^[a-zA-Z0-9_/]+$');
+  return validPathRegExp.hasMatch(path);
 }
 
 
