@@ -263,7 +263,7 @@ void _saveConfig(Map<String, String> config) {
       buffer.writeln('$key=$value');
     });
     configFile.writeAsStringSync(buffer.toString());
-    print('✅ Saved configuration to $configFilePath');
+    //print('✅ Saved configuration to $configFilePath');
   } catch (e) {
     throw Exception('Failed to save config to $configFilePath: $e');
   }
