@@ -18,7 +18,7 @@ void runCli(List<String> args) async {
   if (pathType == null) {
     print('\n📁 Choose path type:');
     print('1. Feature-based path (lib/src/features/$feature)');
-    print('2. Custom path (lib/<optional_parent_path>/$feature)');
+    print('2. Custom path (lib/<your_parent_path>/$feature)');
     stdout.write('Enter your choice (1 or 2): ');
     pathType = stdin.readLineSync()?.trim();
 
