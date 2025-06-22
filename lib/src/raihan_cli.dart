@@ -1,5 +1,4 @@
 import 'dart:io';
-
 const configFilePath = 'tool/.cli_architecture_config';
 
 void runCli(List<String> args) async {
@@ -9,7 +8,7 @@ void runCli(List<String> args) async {
   }
 
   final feature = args[0];
-  final pascalFeature = _toPascalCase(feature);
+  final pascalFeature = toPascalCase(feature);
 
   // Step 1: Load or ask path config
   final pathConfig = _readConfig();
@@ -121,15 +120,15 @@ void runCli(List<String> args) async {
 
   // Step 4: Create files
   if (architecture == 'mvc') {
-    createdAnything = _createFile('$basePath/controllers/${feature}_controller.dart', '// Controller for $feature (MVC)\n') || createdAnything;
+    createdAnything = createFile('$basePath/controllers/${feature}_controller.dart', '// Controller for $feature (MVC)\n') || createdAnything;
   } else if (architecture == 'mvvm') {
-    createdAnything = _createFile('$basePath/view_model/${feature}_view_model.dart', '// ViewModel for $feature (MVVM)\n') || createdAnything;
-    createdAnything = _createFile('$basePath/repository/${feature}_repository.dart', '''
+    createdAnything = createFile('$basePath/view_model/${feature}_view_model.dart', '// ViewModel for $feature (MVVM)\n') || createdAnything;
+    createdAnything = createFile('$basePath/repository/${feature}_repository.dart', '''
 abstract class ${pascalFeature}Repository {
   // Define your abstract methods here
 }
 ''') || createdAnything;
-    createdAnything = _createFile('$basePath/repository/${feature}_repository_impl.dart', '''
+    createdAnything = createFile('$basePath/repository/${feature}_repository_impl.dart', '''
 import '${feature}_repository.dart';
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
@@ -138,8 +137,8 @@ class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
 ''') || createdAnything;
   }
 
-  createdAnything = _createFile('$basePath/model/${feature}_model.dart', '// Model for $feature\n') || createdAnything;
-  createdAnything = _createFile('$basePath/views/screen/${feature}_screen.dart', '''
+  createdAnything = createFile('$basePath/model/${feature}_model.dart', '// Model for $feature\n') || createdAnything;
+  createdAnything = createFile('$basePath/views/screen/${feature}_screen.dart', '''
 import 'package:flutter/material.dart';
 
 class ${pascalFeature}Screen extends StatelessWidget {
@@ -162,8 +161,26 @@ class ${pascalFeature}Screen extends StatelessWidget {
   }
 }
 
-bool _createFile(String path, String content) {
+// bool _createFile(String path, String content) {
+//   final file = File(path);
+//   if (!file.existsSync()) {
+//     file.writeAsStringSync(content);
+//     print('✅  Created file: $path');
+//     return true;
+//   } else {
+//     print('⚠️ File already exists: $path');
+//     return false;
+//   }
+// }
+
+bool createFile(String path, String content) {
   final file = File(path);
+  final directory = file.parent;
+
+  if (!directory.existsSync()) {
+    directory.createSync(recursive: true);
+  }
+
   if (!file.existsSync()) {
     file.writeAsStringSync(content);
     print('✅  Created file: $path');
@@ -174,7 +191,7 @@ bool _createFile(String path, String content) {
   }
 }
 
-String _toPascalCase(String text) {
+String toPascalCase(String text) {
   return text
       .split('_')
       .map((word) => word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : '')
@@ -209,3 +226,6 @@ void _saveConfig(Map<String, String> config) {
 // --------------------->> del tool\.cli_architecture_config
 // --------------------->> dart pub global activate raihan_cli
 // --------------------->> raihan_cli <feature_name> [optional_parent_path]
+// --------------------->> dart pub global deactivate raihan_cli
+// --------------------->> which raihan_cli  # (macOS/Linux)
+// --------------------->> where raihan_cli  # (Windows)
