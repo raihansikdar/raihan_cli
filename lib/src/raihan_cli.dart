@@ -1,0 +1,211 @@
+import 'dart:io';
+
+const configFilePath = 'tool/.cli_architecture_config';
+
+void runCli(List<String> args) async {
+  if (args.isEmpty) {
+    print('❌ Please provide a feature name.\nUsage: dart tool/raihan_cli.dart <feature_name> [optional_parent_path]');
+    return;
+  }
+
+  final feature = args[0];
+  final pascalFeature = _toPascalCase(feature);
+
+  // Step 1: Load or ask path config
+  final pathConfig = _readConfig();
+  String? pathType = pathConfig['pathType'];
+  String? customParent = pathConfig['customPath'];
+
+  if (pathType == null) {
+    print('\n📁 Choose path type:');
+    print('1. Feature-based path (lib/src/features/$feature)');
+    print('2. Custom path (lib/<optional_parent_path>/$feature)');
+    stdout.write('Enter your choice (1 or 2): ');
+    pathType = stdin.readLineSync()?.trim();
+
+    if (pathType == '2') {
+      stdout.write('📁 Enter custom parent path (Write . for lib/$feature): ');
+      customParent = stdin.readLineSync()?.trim() ?? '';
+    }
+
+    _saveConfig({
+      ...pathConfig,
+      'pathType': pathType ?? '', // just in case
+      'customPath': (customParent ?? '').toString(),
+    });
+
+  }
+
+  String basePath;
+  if (pathType == '1') {
+    basePath = 'lib/src/features/$feature';
+  } else if (pathType == '2') {
+    basePath = (customParent == '.' || (customParent?.isEmpty ?? true))
+        ? 'lib/$feature'
+        : 'lib/$customParent/$feature';
+  } else {
+    print('❌ Invalid path choice. Aborting.');
+    return;
+  }
+
+  // Step 2: Load or ask architecture
+  String? architecture = pathConfig['architecture'];
+  if (args.length > 1 && args[1] != '1' && args[1] != '2') {
+    architecture = args[1].toLowerCase();
+    _saveConfig({..._readConfig(), 'architecture': architecture});
+  }
+
+  if (architecture == null) {
+    print('\n🧱 Choose architecture:');
+    print('1. mvc');
+    print('2. mvvm');
+    stdout.write('Enter your choice (1 or 2): ');
+    final input = stdin.readLineSync();
+
+    if (input == '1') {
+      architecture = 'mvc';
+    } else if (input == '2') {
+      architecture = 'mvvm';
+    } else {
+      print('❌ Invalid architecture choice. Aborting.');
+      return;
+    }
+
+    _saveConfig({..._readConfig(), 'architecture': architecture});
+  }
+
+  // ----- Step 3: Reset and create folders
+  // final featureDir = Directory(basePath);
+  // if (featureDir.existsSync()) {
+  //   print('♻️ Resetting "$feature" folder...');
+  //   featureDir.deleteSync(recursive: true);
+  // }
+  // featureDir.createSync(recursive: true);
+
+  //---- Step 3: folders already exists
+
+  final featureDir = Directory(basePath);
+  bool createdAnything = false;
+
+  if (!featureDir.existsSync()) {
+    featureDir.createSync(recursive: true);
+    print('♻️ Created folder "$feature"');
+    createdAnything = true;
+  } else {
+    print('♻️ Folder "$feature" already exists');
+  }
+
+
+  List<String> folders = [
+    '$basePath/model',
+    '$basePath/views/screen',
+    '$basePath/views/widget',
+  ];
+
+  if (architecture == 'mvc') {
+    folders.add('$basePath/controllers');
+  } else if (architecture == 'mvvm') {
+    folders.addAll(['$basePath/view_model', '$basePath/repository']);
+  }
+
+  for (final folder in folders) {
+    final dir = Directory(folder);
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
+      print('📁 Created: $folder');
+      createdAnything = true;
+    } else {
+      print('⚠️ Already exists: $folder');
+    }
+  }
+
+  // Step 4: Create files
+  if (architecture == 'mvc') {
+    createdAnything = _createFile('$basePath/controllers/${feature}_controller.dart', '// Controller for $feature (MVC)\n') || createdAnything;
+  } else if (architecture == 'mvvm') {
+    createdAnything = _createFile('$basePath/view_model/${feature}_view_model.dart', '// ViewModel for $feature (MVVM)\n') || createdAnything;
+    createdAnything = _createFile('$basePath/repository/${feature}_repository.dart', '''
+abstract class ${pascalFeature}Repository {
+  // Define your abstract methods here
+}
+''') || createdAnything;
+    createdAnything = _createFile('$basePath/repository/${feature}_repository_impl.dart', '''
+import '${feature}_repository.dart';
+
+class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
+  // Implement methods here
+}
+''') || createdAnything;
+  }
+
+  createdAnything = _createFile('$basePath/model/${feature}_model.dart', '// Model for $feature\n') || createdAnything;
+  createdAnything = _createFile('$basePath/views/screen/${feature}_screen.dart', '''
+import 'package:flutter/material.dart';
+
+class ${pascalFeature}Screen extends StatelessWidget {
+  const ${pascalFeature}Screen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('$feature screen')),
+      body: const Center(child: Text('Welcome to $feature!')),
+    );
+  }
+}
+''') || createdAnything;
+
+  if (createdAnything) {
+    print('\n🚀 "$feature" ($architecture) structure created at "$basePath"!');
+  } else {
+    print('\nℹ️ "$feature" ($architecture) structure already exists at "$basePath". No new files or folders created.');
+  }
+}
+
+bool _createFile(String path, String content) {
+  final file = File(path);
+  if (!file.existsSync()) {
+    file.writeAsStringSync(content);
+    print('✅  Created file: $path');
+    return true;
+  } else {
+    print('⚠️ File already exists: $path');
+    return false;
+  }
+}
+
+String _toPascalCase(String text) {
+  return text
+      .split('_')
+      .map((word) => word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : '')
+      .join();
+}
+
+// Reads all config as key-value map
+Map<String, String> _readConfig() {
+  final configFile = File(configFilePath);
+  if (!configFile.existsSync()) return {};
+  final lines = configFile.readAsLinesSync();
+  return {
+    for (var line in lines)
+      if (line.contains('='))
+        line.split('=').first.trim(): line.split('=').last.trim()
+  };
+}
+
+// Overwrites existing config file with updated key-value map
+void _saveConfig(Map<String, String> config) {
+  final buffer = StringBuffer();
+  config.forEach((key, value) {
+    buffer.writeln('$key=$value');
+  });
+  File(configFilePath).writeAsStringSync(buffer.toString());
+}
+
+
+
+
+// --------------------->> dart tool/raihan_cli.dart product
+// --------------------->> del tool\.cli_architecture_config
+// --------------------->> dart pub global activate raihan_cli
+// --------------------->> raihan_cli <feature_name> [optional_parent_path]
