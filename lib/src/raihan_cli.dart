@@ -103,7 +103,7 @@ void runCli(List<String> args) async {
   try {
     if (!featureDir.existsSync()) {
       featureDir.createSync(recursive: true);
-      print('♻️ Created folder "$basePath"');
+      print('\n♻️ Created folder "$basePath"');
       createdAnything = true;
     } else {
       print('♻️ Folder "$basePath" already exists');
@@ -275,7 +275,8 @@ void _saveConfig(Map<String, String> config) {
 // --------------------->> del tool\.cli_architecture_config
 // --------------------->> dart pub global activate raihan_cli
 // --------------------->> raihan_cli <feature_name> [optional_parent_path]
-// --------------------->> dart pub global deactivate raihan_cli
+
 // --------------------->> which raihan_cli  # (macOS/Linux)
 // --------------------->> where raihan_cli  # (Windows)
 // --------------------->> dart pub global activate --source git https://github.com/raihansikdar/raihan_cli.git
+// --------------------->> dart pub global deactivate raihan_cli
