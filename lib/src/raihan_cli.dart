@@ -27,12 +27,16 @@ void runCli(List<String> args) async {
       customParent = stdin.readLineSync()?.trim() ?? '';
     }
 
-    _saveConfig({
-      ...pathConfig,
-      'pathType': pathType ?? '', // just in case
-      'customPath': (customParent ?? '').toString(),
-    });
-
+    try {
+      _saveConfig({
+        ...pathConfig,
+        'pathType': pathType ?? '', // just in case
+        'customPath': (customParent ?? '').toString(),
+      });
+    } catch (e) {
+      print('❌ Failed to save path configuration: $e');
+      return;
+    }
   }
 
   String basePath;
@@ -51,7 +55,12 @@ void runCli(List<String> args) async {
   String? architecture = pathConfig['architecture'];
   if (args.length > 1 && args[1] != '1' && args[1] != '2') {
     architecture = args[1].toLowerCase();
-    _saveConfig({..._readConfig(), 'architecture': architecture});
+    try {
+      _saveConfig({..._readConfig(), 'architecture': architecture});
+    } catch (e) {
+      print('❌ Failed to save architecture configuration: $e');
+      return;
+    }
   }
 
   if (architecture == null) {
@@ -70,7 +79,12 @@ void runCli(List<String> args) async {
       return;
     }
 
-    _saveConfig({..._readConfig(), 'architecture': architecture});
+    try {
+      _saveConfig({..._readConfig(), 'architecture': architecture});
+    } catch (e) {
+      print('❌ Failed to save architecture configuration: $e');
+      return;
+    }
   }
 
   // ----- Step 3: Reset and create folders
@@ -86,14 +100,18 @@ void runCli(List<String> args) async {
   final featureDir = Directory(basePath);
   bool createdAnything = false;
 
-  if (!featureDir.existsSync()) {
-    featureDir.createSync(recursive: true);
-    print('♻️ Created folder "$feature"');
-    createdAnything = true;
-  } else {
-    print('♻️ Folder "$feature" already exists');
+  try {
+    if (!featureDir.existsSync()) {
+      featureDir.createSync(recursive: true);
+      print('♻️ Created folder "$basePath"');
+      createdAnything = true;
+    } else {
+      print('♻️ Folder "$basePath" already exists');
+    }
+  } catch (e) {
+    print('❌ Failed to create folder "$basePath": $e');
+    return;
   }
-
 
   List<String> folders = [
     '$basePath/model',
@@ -109,12 +127,17 @@ void runCli(List<String> args) async {
 
   for (final folder in folders) {
     final dir = Directory(folder);
-    if (!dir.existsSync()) {
-      dir.createSync(recursive: true);
-      print('📁 Created: $folder');
-      createdAnything = true;
-    } else {
-      print('⚠️ Already exists: $folder');
+    try {
+      if (!dir.existsSync()) {
+        dir.createSync(recursive: true);
+        print('📁 Created: $folder');
+        createdAnything = true;
+      } else {
+        print('⚠️ Already exists: $folder');
+      }
+    } catch (e) {
+      print('❌ Failed to create folder "$folder": $e');
+      return;
     }
   }
 
@@ -177,16 +200,21 @@ bool createFile(String path, String content) {
   final file = File(path);
   final directory = file.parent;
 
-  if (!directory.existsSync()) {
-    directory.createSync(recursive: true);
-  }
+  try {
+    if (!directory.existsSync()) {
+      directory.createSync(recursive: true);
+    }
 
-  if (!file.existsSync()) {
-    file.writeAsStringSync(content);
-    print('✅  Created file: $path');
-    return true;
-  } else {
-    print('⚠️ File already exists: $path');
+    if (!file.existsSync()) {
+      file.writeAsStringSync(content);
+      print('✅  Created file: $path');
+      return true;
+    } else {
+      print('⚠️ File already exists: $path');
+      return false;
+    }
+  } catch (e) {
+    print('❌ Failed to create file "$path": $e');
     return false;
   }
 }
@@ -201,43 +229,45 @@ String toPascalCase(String text) {
 // Reads all config as key-value map
 Map<String, String> _readConfig() {
   final configFile = File(configFilePath);
-  if (!configFile.existsSync()) return {};
-  final lines = configFile.readAsLinesSync();
-  return {
-    for (var line in lines)
-      if (line.contains('='))
-        line.split('=').first.trim(): line.split('=').last.trim()
-  };
+  if (!configFile.existsSync()) {
+    print('⚠️ Config file not found at $configFilePath. Using empty config.');
+    return {};
+  }
+  try {
+    final lines = configFile.readAsLinesSync();
+    return {
+      for (var line in lines)
+        if (line.contains('='))
+          line.split('=').first.trim(): line.split('=').last.trim()
+    };
+  } catch (e) {
+    print('❌ Failed to read config file $configFilePath: $e');
+    return {};
+  }
 }
 
 // Overwrites existing config file with updated key-value map
-// void _saveConfig(Map<String, String> config) {
-//   final buffer = StringBuffer();
-//   config.forEach((key, value) {
-//     buffer.writeln('$key=$value');
-//   });
-//   File(configFilePath).writeAsStringSync(buffer.toString());
-// }
-
-
 void _saveConfig(Map<String, String> config) {
   final configFile = File(configFilePath);
-  final configDir = configFile.parent;
+  final toolDir = Directory('tool');
 
-  if (!configDir.existsSync()) {
-    configDir.createSync(recursive: true); // ✅ Ensure the 'tool' folder exists
+  try {
+    // Create tool directory if it doesn't exist
+    if (!toolDir.existsSync()) {
+      toolDir.createSync(recursive: true);
+      print('📁 Created tool directory for configuration');
+    }
+
+    final buffer = StringBuffer();
+    config.forEach((key, value) {
+      buffer.writeln('$key=$value');
+    });
+    configFile.writeAsStringSync(buffer.toString());
+    print('✅ Saved configuration to $configFilePath');
+  } catch (e) {
+    throw Exception('Failed to save config to $configFilePath: $e');
   }
-
-  final buffer = StringBuffer();
-  config.forEach((key, value) {
-    buffer.writeln('$key=$value');
-  });
-
-  configFile.writeAsStringSync(buffer.toString());
 }
-
-
-
 
 
 
