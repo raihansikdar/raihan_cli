@@ -7,6 +7,58 @@ void runCli(List<String> args) async {
     return;
   }
 
+
+  
+   // 🧹 ----------Handle remove command---------
+  if (args[0] == 'remove') {
+    if (args.length < 2) {
+      print('❌ Please provide a feature name to remove.\nUsage: dart tool/raihan_cli.dart remove <feature_name>');
+      return;
+    }
+
+    final removeFeature = args[1];
+    final pathConfig = _readConfig();
+    final pathType = pathConfig['pathType'];
+    final customParent = pathConfig['customPath'];
+
+    String removePath;
+    if (pathType == '1') {
+      removePath = 'lib/src/features/$removeFeature';
+    } else if (pathType == '2') {
+      removePath = (customParent == '.' || (customParent?.isEmpty ?? true))
+          ? 'lib/$removeFeature'
+          : 'lib/$customParent/$removeFeature';
+    } else {
+      print('❌ Invalid path configuration. Cannot determine path for removal.');
+      return;
+    }
+
+    final dir = Directory(removePath);
+    if (dir.existsSync()) {
+      stdout.write('⚠️ Are you sure you want to delete "$removePath"? (y/N): ');
+      final confirm = stdin.readLineSync()?.trim().toLowerCase();
+      if (confirm == 'y') {
+        try {
+          dir.deleteSync(recursive: true);
+          print('🗑️ Successfully removed folder "$removePath".');
+        } catch (e) {
+          print('❌ Failed to delete folder: $e');
+        }
+      } else {
+        print('❌ Deletion cancelled.');
+      }
+    } else {
+      print('⚠️ Folder "$removePath" does not exist.');
+    }
+    return;
+  }
+
+  
+
+
+
+
+
   final feature = args[0];
   final pascalFeature = toPascalCase(feature);
 
