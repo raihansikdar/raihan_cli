@@ -1,6 +1,6 @@
 name: raihan_cli
 description: "raihan_cli is a Dart-based CLI tool designed to generate feature folder structures in Flutter projects, supporting both MVC and MVVM architectures. It simplifies project scaffolding and ensures consistent architecture practices."
-version: 0.0.1
+version: 1.0.0
 homepage: https://github.com/raihansikdar/raihan_cli
 
 environment:

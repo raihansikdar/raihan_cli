@@ -6,10 +6,20 @@
 
 ## 📦 Installation
 
-To install globally from your Git repository:
+To install globally from the Pub.dev package:
+```
+dart pub global activate raihan_cli
+```
+
+Alternatively, to install from the Git repository:
 
 ```bash
 dart pub global activate --source git https://github.com/raihansikdar/raihan_cli.git
+```
+✅ Deactivating the CLI Package:
+```
+dart pub global deactivate raihan_cli
+
 ```
 
 ## ✅ Verify Installation
@@ -102,7 +112,8 @@ lib/core/<feature_name>/  # if custom path is "core"
 
 ```
 
-## License
+## 📜 License
+
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 ```text
