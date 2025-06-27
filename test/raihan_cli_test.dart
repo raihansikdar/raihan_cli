@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:test/test.dart';
-import 'package:raihan_cli/raihan_cli.dart'; // This includes utils.dart because you exported it
+import 'package:raihan_cli/raihan_cli.dart';
 
 void main() {
   group('PascalCase Conversion', () {
