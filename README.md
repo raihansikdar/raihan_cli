@@ -49,6 +49,10 @@ Architecture type:
 
 2: MVVM
 
+Then your feature folder create successfully.
+
+
+### If folder is not showing then collapse your parent folder like this
 ![raihan_cli demo](assets/raihan_cli_feature.gif)
 
 
