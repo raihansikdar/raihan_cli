@@ -53,13 +53,20 @@ Folder structure type:
 
 2: Custom (lib/<custom_path>/<feature_name>)
 
+
+📌 **Note:** You must configure the path type on the first run. The tool will remember your choice.
+
+
 Architecture type:
 
 1: MVC
 
 2: MVVM
 
-Then your feature folder create successfully.
+📌 **Note:** You must configure the state management on the first run. The tool will remember your choice.
+
+
+Then your feature folder will create successfully.
 
 
 ### If folder is not showing then collapse your parent folder like this
@@ -91,14 +98,14 @@ lib/src/features/<feature_name>/
 ├── model/
 │   └── <feature_name>_model.dart
 └── views/
-├── screen/
-│   └── <feature_name>_screen.dart
-└── widget/
-
+    ├── screen/
+    │   └── <feature_name>_screen.dart
+    └── widget/
 ```
+
 ### 📁 MVVM Folder Structure
 ```
-lib/core/<feature_name>/  # if custom path is "core"
+lib/core/<feature_name>/   # if custom path is "core"
 ├── model/
 │   └── <feature_name>_model.dart
 ├── view_model/
@@ -107,8 +114,9 @@ lib/core/<feature_name>/  # if custom path is "core"
 │   ├── <feature_name>_repository.dart
 │   └── <feature_name>_repository_impl.dart
 └── views/
-├── screen/
-└── widget/
+    ├── screen/
+    │   └── <feature_name>_screen.dart
+    └── widget/
 
 ```
 
