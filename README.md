@@ -82,7 +82,7 @@ Confirms and deletes the feature directory based on previously saved config.
 
 ## 💡 Architecture Details
 
-### MVC Folder Structure
+### 📁 MVC Folder Structure
 
 ```
 lib/src/features/<feature_name>/
@@ -96,7 +96,7 @@ lib/src/features/<feature_name>/
 └── widget/
 
 ```
-### MVVM Folder Structure
+### 📁 MVVM Folder Structure
 ```
 lib/core/<feature_name>/  # if custom path is "core"
 ├── model/
