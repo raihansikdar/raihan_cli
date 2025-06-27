@@ -85,6 +85,8 @@ raihan_cli dashboard mvvm
 raihan_cli remove <feature_name>
 
 ```
+> **Note:** If folder is not showing then collapse your parent folder.
+
 Confirms and deletes the feature directory based on previously saved config.
 
 ## 💡 Architecture Details
@@ -119,6 +121,17 @@ lib/core/<feature_name>/   # if custom path is "core"
     └── widget/
 
 ```
+## 🔄 Reset Configuration
+
+```
+# Windows
+del tool\.cli_architecture_config
+
+# macOS/Linux
+rm tool/.cli_architecture_config
+
+```
+
 
 ## 📜 License
 
