@@ -49,6 +49,10 @@ Architecture type:
 
 2: MVVM
 
+![raihan_cli demo](assets/raihan_cli_feature.gif)
+
+
+
 You can skip prompts by providing the architecture:
 
 ```
