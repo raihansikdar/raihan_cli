@@ -57,7 +57,7 @@ Then your feature folder create successfully.
 
 
 
-You can skip prompts by providing the architecture:
+### You can skip prompts by providing the architecture:
 
 ```
 raihan_cli dashboard mvvm
