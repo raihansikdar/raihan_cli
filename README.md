@@ -14,13 +14,13 @@ dart pub global activate --source git https://github.com/raihansikdar/raihan_cli
 
 ## ✅ Verify Installation
 
-#### macOS/Linux
+### macOS/Linux
 which raihan_cli
 
-#### Windows
+### Windows
 where raihan_cli
 
-```
+
 
 ## 📁 What It Does
 
