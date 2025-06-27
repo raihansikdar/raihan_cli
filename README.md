@@ -72,14 +72,6 @@ Then your feature folder will create successfully.
 ### If folder is not showing then collapse your parent folder like this
 ![raihan_cli demo](assets/raihan_cli_feature.gif)
 
-
-
-### You can skip prompts by providing the architecture:
-
-```
-raihan_cli dashboard mvvm
-
-```
 ### 🗑️ Remove an Existing Feature
 ```
 raihan_cli remove <feature_name>
