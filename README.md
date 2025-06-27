@@ -54,7 +54,7 @@ Folder structure type:
 2: Custom (lib/<custom_path>/<feature_name>)
 
 
-📌 **Note:** You must configure the path type on the first run. The tool will remember your choice.
+> **Note:** You must configure the path type on the first run. The tool will remember your choice.
 
 
 Architecture type:
@@ -63,7 +63,7 @@ Architecture type:
 
 2: MVVM
 
-📌 **Note:** You must configure the state management on the first run. The tool will remember your choice.
+> **Note:** You must configure the state management on the first run. The tool will remember your choice.
 
 
 Then your feature folder will create successfully.
