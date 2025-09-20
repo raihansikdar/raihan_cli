@@ -70,7 +70,7 @@ Then your feature folder will create successfully.
 
 
 ### If folder is not showing then collapse your parent folder like this
-![raihan_cli demo](assets/raihan_cli_feature.gif)
+![raihan_cli](https://github.com/raihansikdar/raihan_cli/blob/main/assets/raihan_cli_feature.gif?raw=true)
 
 ### 🗑️ Remove an Existing Feature
 ```

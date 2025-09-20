@@ -50,7 +50,7 @@ void runCli(List<String> args) async {
     } else {
       print('⚠️ Folder "$removePath" does not exist.');
     }
-    return;
+    return; 
   }
 
   
