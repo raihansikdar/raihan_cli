@@ -73,7 +73,7 @@ void runCli(List<String> args) async {
     pathType = stdin.readLineSync()?.trim();
 
     if (pathType == '2') {
-      stdout.write('📁 Enter custom parent path (e.g., "core" for lib/core/$feature, or "." for lib/$feature): ');
+      stdout.write('📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ');
       customParent = stdin.readLineSync()?.trim() ?? '';
     }
 
