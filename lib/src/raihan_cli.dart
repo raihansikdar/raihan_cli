@@ -7,8 +7,6 @@ void runCli(List<String> args) async {
     return;
   }
 
-
-  
    // 🧹 ----------Handle remove command---------
   if (args[0] == 'remove') {
     if (args.length < 2) {
@@ -85,6 +83,11 @@ void runCli(List<String> args) async {
         'pathType': pathType ?? '', // just in case
         'customPath': (customParent ?? '').toString(),
       });
+
+      final updatedConfig = _readConfig();
+      pathType = updatedConfig['pathType'];
+      customParent = updatedConfig['customPath'];
+
     } catch (e) {
       print('❌ Failed to save path configuration: $e');
       return;
