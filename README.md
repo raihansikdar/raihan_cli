@@ -127,6 +127,7 @@ rm tool/.cli_architecture_config
 
 ##  👨‍💻 Author
 **Raihan Sikdar**
+
 Website: [raihansikdar.com](https://raihansikdar.com)  
 Email: raihansikdar10@gmail.com  
 GitHub: [raihansikdar](https://github.com/raihansikdar)  
