@@ -9,7 +9,7 @@ void runCli(List<String> args) async {
     return;
   }
 
-  // 🧹 ----------Handle remove command---------
+  // ----------Handle remove command---------
   if (args[0] == 'remove') {
     if (args.length < 2) {
       print(
@@ -109,13 +109,16 @@ void runCli(List<String> args) async {
     print('\n🛠 Choose state management:');
     print('1. getx');
     print('2. provider');
-    print('3. other (default: getx)');
-    stdout.write('Enter your choice (1/2/3): ');
+    print('3. bloc');
+    print('4. other (default: getx)');
+    stdout.write('Enter your choice (1/2/3/4): ');
     final input = stdin.readLineSync()?.trim();
 
     if (input == '2') {
       stateManagement = 'provider';
     } else if (input == '3') {
+      stateManagement = 'bloc';
+    } else if (input == '4') {
       stateManagement = 'other';
     } else {
       stateManagement = 'getx'; // default
@@ -191,7 +194,13 @@ void runCli(List<String> args) async {
     '$basePath/views/widget',
   ];
 
-  if (architecture == 'mvc') {
+  if (stateManagement == 'bloc') {
+    if (architecture == 'mvc') {
+      folders = ['$basePath/bloc', ...folders];
+    } else if (architecture == 'mvvm') {
+      folders = ['$basePath/bloc', '$basePath/repository', ...folders];
+    }
+  } else if (architecture == 'mvc') {
     if (stateManagement == 'provider') {
       folders.add('$basePath/provider');
     } else {
@@ -222,7 +231,18 @@ void runCli(List<String> args) async {
   }
 
   // Step 6: Create files
-  if (architecture == 'mvc') {
+  if (stateManagement == 'bloc') {
+    final blocFolder = '$basePath/bloc';
+    createdAnything = createFile('$blocFolder/${feature}_bloc.dart',
+        '// BLoC for $feature\n') ||
+        createdAnything;
+    createdAnything = createFile('$blocFolder/${feature}_event.dart',
+        '// Event for $feature\n') ||
+        createdAnything;
+    createdAnything = createFile('$blocFolder/${feature}_state.dart',
+        '// State for $feature\n') ||
+        createdAnything;
+  } else if (architecture == 'mvc') {
     if (stateManagement == 'provider') {
       createdAnything = createFile(
           '$basePath/provider/${feature}_provider.dart',
@@ -261,7 +281,9 @@ class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
 ''') || createdAnything;
   }
 
-  createdAnything = createFile('$basePath/model/${feature}_model.dart', '// Model for $feature\n') || createdAnything;
+  createdAnything = createFile('$basePath/model/${feature}_model.dart',
+      '// Model for $feature\n') ||
+      createdAnything;
 
   createdAnything = createFile('$basePath/views/screen/${feature}_screen.dart', '''
 import 'package:flutter/material.dart';
@@ -277,10 +299,12 @@ class ${pascalFeature}Screen extends StatelessWidget {
     );
   }
 }
-''') || createdAnything;
+''') ||
+      createdAnything;
 
   if (createdAnything) {
-    print('\n🚀 "$feature" ($architecture, $stateManagement) structure created at "$basePath"!');
+    print(
+        '\n🚀 "$feature" ($architecture, $stateManagement) structure created at "$basePath"!');
   } else {
     print(
         '\nℹ️ "$feature" ($architecture, $stateManagement) structure already exists at "$basePath". No new files or folders created.');
