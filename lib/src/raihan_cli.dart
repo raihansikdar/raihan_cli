@@ -110,16 +110,13 @@ void runCli(List<String> args) async {
     print('1. getx');
     print('2. provider');
     print('3. bloc');
-    print('4. other (default: getx)');
-    stdout.write('Enter your choice (1/2/3/4): ');
+    stdout.write('Enter your choice (1/2/3): ');
     final input = stdin.readLineSync()?.trim();
 
     if (input == '2') {
       stateManagement = 'provider';
     } else if (input == '3') {
       stateManagement = 'bloc';
-    } else if (input == '4') {
-      stateManagement = 'other';
     } else {
       stateManagement = 'getx'; // default
     }
@@ -242,6 +239,23 @@ void runCli(List<String> args) async {
     createdAnything = createFile('$blocFolder/${feature}_state.dart',
         '// State for $feature\n') ||
         createdAnything;
+
+    if (architecture == 'mvvm') {
+      final repoFolder = '$basePath/repository';
+      createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
+abstract class ${pascalFeature}Repository {
+  // Define your abstract methods here
+}
+''') || createdAnything;
+
+      createdAnything = createFile('$repoFolder/${feature}_repository_impl.dart', '''
+import '${feature}_repository.dart';
+
+class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
+  // Implement methods here
+}
+''') || createdAnything;
+    }
   } else if (architecture == 'mvc') {
     if (stateManagement == 'provider') {
       createdAnything = createFile(
@@ -265,14 +279,14 @@ void runCli(List<String> args) async {
           createdAnything;
     }
 
-    // Repository files (same for all)
-    createdAnything = createFile('$basePath/repository/${feature}_repository.dart', '''
+    final repoFolder = '$basePath/repository';
+    createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
 abstract class ${pascalFeature}Repository {
   // Define your abstract methods here
 }
 ''') || createdAnything;
 
-    createdAnything = createFile('$basePath/repository/${feature}_repository_impl.dart', '''
+    createdAnything = createFile('$repoFolder/${feature}_repository_impl.dart', '''
 import '${feature}_repository.dart';
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
