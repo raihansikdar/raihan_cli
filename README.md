@@ -55,7 +55,7 @@ rm tool/.cli_architecture_config
 raihan_cli <feature_name>
 
 ```
-> **Example:** raihan_cli remove product
+> **Example:** raihan_cli product
 
 You’ll be prompted to choose:
 
