@@ -90,7 +90,7 @@ Then your feature folder will create successfully.
 ```
 raihan_cli remove <feature_name>
 ```
-> **Example:** raihan_cli remove product
+> **Example:** raihan_cli remove product <br>
 > **Note:** If folder is not showing then collapse your parent folder.
 
 Confirms and deletes the feature directory based on previously saved config.
