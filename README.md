@@ -22,6 +22,18 @@ dart pub global deactivate raihan_cli
 
 ```
 
+## 🔄 Reset Configuration
+
+```
+# Windows
+del tool\.cli_architecture_config
+
+# macOS/Linux
+rm tool/.cli_architecture_config
+
+```
+
+
 ## ✅ Verify Installation
 
 ### macOS/Linux
@@ -113,16 +125,7 @@ lib/core/<feature_name>/   # if custom path is "core"
     └── widget/
 
 ```
-## 🔄 Reset Configuration
 
-```
-# Windows
-del tool\.cli_architecture_config
-
-# macOS/Linux
-rm tool/.cli_architecture_config
-
-```
 
 
 ## 📜 License
