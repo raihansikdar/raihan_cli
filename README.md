@@ -82,7 +82,7 @@ Then your feature folder will create successfully.
 
 
 ### If folder is not showing then collapse your parent folder like this
-![raihan_cli demo](assets/raihan_cli_feature.gif)
+![raihan_cli](https://github.com/raihansikdar/raihan_cli/blob/main/assets/raihan_cli_feature.gif?raw=true)
 
 ### 🗑️ Remove an Existing Feature
 ```
@@ -128,13 +128,13 @@ lib/core/<feature_name>/   # if custom path is "core"
 
 
 
+##  👨‍💻 Author
+**Raihan Sikdar**
+
+Website: [raihansikdar.com](https://raihansikdar.com)  
+Email: raihansikdar10@gmail.com  
+GitHub: [raihansikdar](https://github.com/raihansikdar)  
+LinkedIn: [raihansikdar](https://www.linkedin.com/in/raihansikdar/)
+
 ## 📜 License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
-
-```text
-MIT License
-
-Copyright (c) 2025 Raihan Sikdar
-
-Permission is hereby granted, free of charge, to any person obtaining a copy...
+This package is licensed under the [MIT License](https://github.com/raihansikdar/raihan_cli/blob/main/LICENSE).
