@@ -57,6 +57,8 @@ where raihan_cli
 raihan_cli <feature_name>
 
 ```
+> **Example:**raihan_cli remove product
+
 You’ll be prompted to choose:
 
 Folder structure type:
@@ -87,8 +89,8 @@ Then your feature folder will create successfully.
 ### 🗑️ Remove an Existing Feature
 ```
 raihan_cli remove <feature_name>
-
 ```
+> **Example:**raihan_cli remove product
 > **Note:** If folder is not showing then collapse your parent folder.
 
 Confirms and deletes the feature directory based on previously saved config.
