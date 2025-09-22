@@ -136,5 +136,13 @@ Email: raihansikdar10@gmail.com
 GitHub: [raihansikdar](https://github.com/raihansikdar)  
 LinkedIn: [raihansikdar](https://www.linkedin.com/in/raihansikdar/)
 
+##  👨‍💻 Author
+**Raihan Sikdar**
+
+Website: [raihansikdar.com](https://raihansikdar.com)  
+Email: raihansikdar10@gmail.com  
+GitHub: [raihansikdar](https://github.com/raihansikdar)  
+LinkedIn: [raihansikdar](https://www.linkedin.com/in/raihansikdar/)
+
 ## 📜 License
 This package is licensed under the [MIT License](https://github.com/raihansikdar/raihan_cli/blob/main/LICENSE).
