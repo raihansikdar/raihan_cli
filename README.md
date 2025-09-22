@@ -89,7 +89,7 @@ Then your feature folder will create successfully.
 raihan_cli remove <feature_name>
 ```
 > **Example:** raihan_cli remove product <br>
-> **Note:** If folder is not showing then collapse your parent folder.
+> **Note:** If folder is still showing then collapse your parent folder.
 
 Confirms and deletes the feature directory based on previously saved config.
 
@@ -111,7 +111,7 @@ lib/src/features/<feature_name>/
 
 ### 📁 MVVM Folder Structure
 ```
-lib/core/<feature_name>/   # if custom path is "core"
+lib/features/<feature_name>/   # if custom path is "features"
 ├── model/
 │   └── <feature_name>_model.dart
 ├── view_model/
