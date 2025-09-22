@@ -16,6 +16,15 @@ Alternatively, to install from the Git repository:
 ```bash
 dart pub global activate --source git https://github.com/raihansikdar/raihan_cli.git
 ```
+
+## ✅ Verify Installation (Optional)
+
+### macOS/Linux
+which raihan_cli
+
+### Windows
+where raihan_cli
+
 ✅ Deactivating the CLI Package:
 ```
 dart pub global deactivate raihan_cli
@@ -32,17 +41,6 @@ del tool\.cli_architecture_config
 rm tool/.cli_architecture_config
 
 ```
-
-
-## ✅ Verify Installation
-
-### macOS/Linux
-which raihan_cli
-
-### Windows
-where raihan_cli
-
-
 
 ## 📁 What It Does
 
