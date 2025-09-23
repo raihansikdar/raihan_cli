@@ -1,16 +1,41 @@
 import 'dart:io';
+
+/// Configuration file path for storing CLI preferences
+/// (e.g., selected architecture, path type, and custom parent path).
 const configFilePath = 'tool/.cli_architecture_config';
 
+/// Entry point for the custom CLI tool.
+///
+/// **Usage:**
+/// ```bash
+/// dart tool/raihan_cli.dart <feature_name> [architecture]
+/// dart tool/raihan_cli.dart remove <feature_name>
+/// ```
+///
+/// - When creating a feature:
+///   - If no architecture is provided, the CLI prompts for it (MVC or MVVM).
+///   - If no path type is configured, the CLI prompts for the folder structure.
+///
+/// - When removing a feature:
+///   - Prompts for confirmation before deleting the folder.
 void runCli(List<String> args) async {
+  // 🟥 Validate arguments
   if (args.isEmpty) {
-    print('❌ Please provide a feature name.\nUsage: dart tool/raihan_cli.dart <feature_name> [optional_parent_path]');
+    print(
+      '❌ Please provide a feature name.\n'
+      'Usage: dart tool/raihan_cli.dart <feature_name> [optional_parent_path]',
+    );
     return;
   }
 
-  // 🧹 ----------Handle remove command---------
+  // 🗑️ ---------- Handle remove command ----------
   if (args[0] == 'remove') {
+    // Requires a second argument (feature name to remove)
     if (args.length < 2) {
-      print('❌ Please provide a feature name to remove.\nUsage: dart tool/raihan_cli.dart remove <feature_name>');
+      print(
+        '❌ Please provide a feature name to remove.\n'
+        'Usage: dart tool/raihan_cli.dart remove <feature_name>',
+      );
       return;
     }
 
@@ -19,13 +44,15 @@ void runCli(List<String> args) async {
     final pathType = pathConfig['pathType'];
     final customParent = pathConfig['customPath'];
 
+    // Determine the full folder path based on stored configuration
     String removePath;
     if (pathType == '1') {
       removePath = 'lib/src/features/$removeFeature';
     } else if (pathType == '2') {
-      removePath = (customParent == '.' || (customParent?.isEmpty ?? true))
-          ? 'lib/$removeFeature'
-          : 'lib/$customParent/$removeFeature';
+      removePath =
+          (customParent == '.' || (customParent?.isEmpty ?? true))
+              ? 'lib/$removeFeature'
+              : 'lib/$customParent/$removeFeature';
     } else {
       print('❌ Invalid path configuration. Cannot determine path for removal.');
       return;
@@ -33,6 +60,7 @@ void runCli(List<String> args) async {
 
     final dir = Directory(removePath);
     if (dir.existsSync()) {
+      // Confirm deletion
       stdout.write('⚠️ Are you sure you want to delete "$removePath"? (y/N): ');
       final confirm = stdin.readLineSync()?.trim().toLowerCase();
       if (confirm == 'y') {
@@ -51,21 +79,17 @@ void runCli(List<String> args) async {
     return;
   }
 
-
-
-
-
-
-
+  // 🟢 ---------- Create feature command ----------
   final feature = args[0];
   final pascalFeature = toPascalCase(feature);
 
-  // Step 1: Load or ask path config
+  // Step 1: Load or request the folder path configuration
   final pathConfig = _readConfig();
   String? pathType = pathConfig['pathType'];
   String? customParent = pathConfig['customPath'];
 
   if (pathType == null) {
+    // Prompt user for folder structure preference
     print('\n📁 Choose path type:');
     print('1. Feature-based path (lib/src/features/$feature)');
     print('2. Custom path (lib/<your_parent_path>/$feature)');
@@ -73,42 +97,47 @@ void runCli(List<String> args) async {
     pathType = stdin.readLineSync()?.trim();
 
     if (pathType == '2') {
-      stdout.write('📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ');
+      stdout.write(
+        '📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ',
+      );
       customParent = stdin.readLineSync()?.trim() ?? '';
     }
 
+    // Save user preference to config file
     try {
       _saveConfig({
         ...pathConfig,
-        'pathType': pathType ?? '', // just in case
+        'pathType': pathType ?? '',
         'customPath': (customParent ?? '').toString(),
       });
 
       final updatedConfig = _readConfig();
       pathType = updatedConfig['pathType'];
       customParent = updatedConfig['customPath'];
-
     } catch (e) {
       print('❌ Failed to save path configuration: $e');
       return;
     }
   }
 
+  // Determine base feature directory based on chosen path type
   String basePath;
   if (pathType == '1') {
     basePath = 'lib/src/features/$feature';
   } else if (pathType == '2') {
-    basePath = (customParent == '.' || (customParent?.isEmpty ?? true))
-        ? 'lib/$feature'
-        : 'lib/$customParent/$feature';
+    basePath =
+        (customParent == '.' || (customParent?.isEmpty ?? true))
+            ? 'lib/$feature'
+            : 'lib/$customParent/$feature';
   } else {
     print('❌ Invalid path choice. Aborting.');
     return;
   }
 
-  // Step 2: Load or ask architecture
+  // Step 2: Load or request architecture (MVC or MVVM)
   String? architecture = pathConfig['architecture'];
   if (args.length > 1 && args[1] != '1' && args[1] != '2') {
+    // Architecture passed as second argument
     architecture = args[1].toLowerCase();
     try {
       _saveConfig({..._readConfig(), 'architecture': architecture});
@@ -142,16 +171,7 @@ void runCli(List<String> args) async {
     }
   }
 
-  // ----- Step 3: Reset and create folders
-  // final featureDir = Directory(basePath);
-  // if (featureDir.existsSync()) {
-  //   print('♻️ Resetting "$feature" folder...');
-  //   featureDir.deleteSync(recursive: true);
-  // }
-  // featureDir.createSync(recursive: true);
-
-  //---- Step 3: folders already exists
-
+  // Step 3: Create the base feature directory if it doesn't exist
   final featureDir = Directory(basePath);
   bool createdAnything = false;
 
@@ -168,6 +188,7 @@ void runCli(List<String> args) async {
     return;
   }
 
+  // Define subfolder structure based on architecture
   List<String> folders = [
     '$basePath/model',
     '$basePath/views/screen',
@@ -180,6 +201,7 @@ void runCli(List<String> args) async {
     folders.addAll(['$basePath/view_model', '$basePath/repository']);
   }
 
+  // Create all subfolders
   for (final folder in folders) {
     final dir = Directory(folder);
     try {
@@ -196,27 +218,48 @@ void runCli(List<String> args) async {
     }
   }
 
-  // Step 4: Create files
+  // Step 4: Create starter files according to architecture
   if (architecture == 'mvc') {
-    createdAnything = createFile('$basePath/controllers/${feature}_controller.dart', '// Controller for $feature (MVC)\n') || createdAnything;
+    createdAnything =
+        createFile(
+          '$basePath/controllers/${feature}_controller.dart',
+          '// Controller for $feature (MVC)\n',
+        ) ||
+        createdAnything;
   } else if (architecture == 'mvvm') {
-    createdAnything = createFile('$basePath/view_model/${feature}_view_model.dart', '// ViewModel for $feature (MVVM)\n') || createdAnything;
-    createdAnything = createFile('$basePath/repository/${feature}_repository.dart', '''
+    createdAnything =
+        createFile(
+          '$basePath/view_model/${feature}_view_model.dart',
+          '// ViewModel for $feature (MVVM)\n',
+        ) ||
+        createdAnything;
+    createdAnything =
+        createFile('$basePath/repository/${feature}_repository.dart', '''
 abstract class ${pascalFeature}Repository {
   // Define your abstract methods here
 }
-''') || createdAnything;
-    createdAnything = createFile('$basePath/repository/${feature}_repository_impl.dart', '''
+''') ||
+        createdAnything;
+    createdAnything =
+        createFile('$basePath/repository/${feature}_repository_impl.dart', '''
 import '${feature}_repository.dart';
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   // Implement methods here
 }
-''') || createdAnything;
+''') ||
+        createdAnything;
   }
 
-  createdAnything = createFile('$basePath/model/${feature}_model.dart', '// Model for $feature\n') || createdAnything;
-  createdAnything = createFile('$basePath/views/screen/${feature}_screen.dart', '''
+  // Common model and screen files
+  createdAnything =
+      createFile(
+        '$basePath/model/${feature}_model.dart',
+        '// Model for $feature\n',
+      ) ||
+      createdAnything;
+  createdAnything =
+      createFile('$basePath/views/screen/${feature}_screen.dart', '''
 import 'package:flutter/material.dart';
 
 class ${pascalFeature}Screen extends StatelessWidget {
@@ -230,27 +273,23 @@ class ${pascalFeature}Screen extends StatelessWidget {
     );
   }
 }
-''') || createdAnything;
+''') ||
+      createdAnything;
 
+  // Final log output
   if (createdAnything) {
     print('\n🚀 "$feature" ($architecture) structure created at "$basePath"!');
   } else {
-    print('\nℹ️ "$feature" ($architecture) structure already exists at "$basePath". No new files or folders created.');
+    print(
+      '\nℹ️ "$feature" ($architecture) structure already exists at "$basePath". No new files or folders created.',
+    );
   }
 }
 
-// bool _createFile(String path, String content) {
-//   final file = File(path);
-//   if (!file.existsSync()) {
-//     file.writeAsStringSync(content);
-//     print('✅  Created file: $path');
-//     return true;
-//   } else {
-//     print('⚠️ File already exists: $path');
-//     return false;
-//   }
-// }
-
+/// Creates a file at the given [path] with the provided [content].
+/// Returns `true` if the file was created, `false` if it already existed.
+///
+/// Ensures that the parent directory exists before writing.
 bool createFile(String path, String content) {
   final file = File(path);
   final directory = file.parent;
@@ -274,18 +313,35 @@ bool createFile(String path, String content) {
   }
 }
 
+/// Converts a snake_case string to PascalCase.
+///
+/// Example:
+/// ```dart
+/// toPascalCase('user_profile') // => UserProfile
+/// ```
 String toPascalCase(String text) {
   return text
       .split('_')
-      .map((word) => word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : '')
+      .map(
+        (word) =>
+            word.isNotEmpty
+                ? '${word[0].toUpperCase()}${word.substring(1)}'
+                : '',
+      )
       .join();
 }
 
-// Reads all config as key-value map
+/// Reads the CLI configuration file and returns a key–value map.
+///
+/// The config file is expected to contain lines in the format:
+/// ```
+/// key=value
+/// ```
+///
+/// Returns an empty map if the file does not exist or cannot be read.
 Map<String, String> _readConfig() {
   final configFile = File(configFilePath);
   if (!configFile.existsSync()) {
-    // print('⚠️ Config file not found at $configFilePath. Using empty config.');
     return {};
   }
   try {
@@ -293,7 +349,7 @@ Map<String, String> _readConfig() {
     return {
       for (var line in lines)
         if (line.contains('='))
-          line.split('=').first.trim(): line.split('=').last.trim()
+          line.split('=').first.trim(): line.split('=').last.trim(),
     };
   } catch (e) {
     print('❌ Failed to read config file $configFilePath: $e');
@@ -301,24 +357,27 @@ Map<String, String> _readConfig() {
   }
 }
 
-// Overwrites existing config file with updated key-value map
+/// Saves the given [config] key–value pairs to the configuration file,
+/// overwriting any existing values.
+///
+/// Automatically creates the `tool` directory if it does not exist.
 void _saveConfig(Map<String, String> config) {
   final configFile = File(configFilePath);
   final toolDir = Directory('tool');
 
   try {
-    // Create tool directory if it doesn't exist
+    // Ensure the `tool` directory exists
     if (!toolDir.existsSync()) {
       toolDir.createSync(recursive: true);
       print('📁 Created tool directory for configuration');
     }
 
+    // Write each key=value pair on a new line
     final buffer = StringBuffer();
     config.forEach((key, value) {
       buffer.writeln('$key=$value');
     });
     configFile.writeAsStringSync(buffer.toString());
-    //print('✅ Saved configuration to $configFilePath');
   } catch (e) {
     throw Exception('Failed to save config to $configFilePath: $e');
   }
