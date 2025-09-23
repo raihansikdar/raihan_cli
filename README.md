@@ -17,31 +17,6 @@ Alternatively, to install from the Git repository:
 dart pub global activate --source git https://github.com/raihansikdar/raihan_cli.git
 ```
 
-## ✅ Verify Installation (Optional)
-
-### macOS/Linux
-which raihan_cli
-
-### Windows
-where raihan_cli
-
-✅ Deactivating the CLI Package:
-```
-dart pub global deactivate raihan_cli
-
-```
-
-## 🔄 Reset Configuration
-
-```
-# Windows
-del tool\.cli_architecture_config
-
-# macOS/Linux
-rm tool/.cli_architecture_config
-
-```
-
 ## 📁 What It Does
 
 1. ✅ Scaffolds folders and files for new features (MVC or MVVM)
@@ -92,6 +67,28 @@ raihan_cli remove <feature_name>
 > **Note:** If folder is still showing then collapse your parent folder.
 
 Confirms and deletes the feature directory based on previously saved config.
+
+
+
+## 🔄 Reset Configuration
+
+```
+# Windows
+del tool\.cli_architecture_config
+
+# macOS/Linux
+rm tool/.cli_architecture_config
+
+```
+
+✅ Deactivating the CLI Package:
+```
+dart pub global deactivate raihan_cli
+
+```
+
+
+
 
 ## 💡 Architecture Details
 
