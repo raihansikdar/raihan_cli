@@ -16,7 +16,7 @@ void runCli(List<String> args) async {
   if (args.isEmpty) {
     print(
       '❌ Please provide a feature name.\n'
-      'Usage: dart tool/raihan_cli.dart <feature_name> [optional_parent_path]',
+          'Usage: dart tool/raihan_cli.dart <feature_name> [optional_parent_path]',
     );
     return;
   }
@@ -26,7 +26,7 @@ void runCli(List<String> args) async {
     if (args.length < 2) {
       print(
         '❌ Please provide a feature name to remove.\n'
-        'Usage: dart tool/raihan_cli.dart remove <feature_name>',
+            'Usage: dart tool/raihan_cli.dart remove <feature_name>',
       );
       return;
     }
@@ -41,9 +41,9 @@ void runCli(List<String> args) async {
       removePath = 'lib/src/features/$removeFeature';
     } else if (pathType == '2') {
       removePath =
-          (customParent == '.' || (customParent?.isEmpty ?? true))
-              ? 'lib/$removeFeature'
-              : 'lib/$customParent/$removeFeature';
+      (customParent == '.' || (customParent?.isEmpty ?? true))
+          ? 'lib/$removeFeature'
+          : 'lib/$customParent/$removeFeature';
     } else {
       print('❌ Invalid path configuration. Cannot determine path for removal.');
       return;
@@ -116,9 +116,9 @@ void runCli(List<String> args) async {
     basePath = 'lib/src/features/$feature';
   } else if (pathType == '2') {
     basePath =
-        (customParent == '.' || (customParent?.isEmpty ?? true))
-            ? 'lib/$feature'
-            : 'lib/$customParent/$feature';
+    (customParent == '.' || (customParent?.isEmpty ?? true))
+        ? 'lib/$feature'
+        : 'lib/$customParent/$feature';
   } else {
     print('❌ Invalid path choice. Aborting.');
     return;
@@ -214,21 +214,21 @@ void runCli(List<String> args) async {
           '$basePath/controllers/${feature}_controller.dart',
           '// Controller for $feature (MVC)\n',
         ) ||
-        createdAnything;
+            createdAnything;
   } else if (architecture == 'mvvm') {
     createdAnything =
         createFile(
           '$basePath/view_model/${feature}_view_model.dart',
           '// ViewModel for $feature (MVVM)\n',
         ) ||
-        createdAnything;
+            createdAnything;
     createdAnything =
         createFile('$basePath/repository/${feature}_repository.dart', '''
 abstract class ${pascalFeature}Repository {
   // Define your abstract methods here
 }
 ''') ||
-        createdAnything;
+            createdAnything;
     createdAnything =
         createFile('$basePath/repository/${feature}_repository_impl.dart', '''
 import '${feature}_repository.dart';
@@ -237,7 +237,7 @@ class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   // Implement methods here
 }
 ''') ||
-        createdAnything;
+            createdAnything;
   }
 
   // Common model and screen files
@@ -246,7 +246,7 @@ class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
         '$basePath/model/${feature}_model.dart',
         '// Model for $feature\n',
       ) ||
-      createdAnything;
+          createdAnything;
   createdAnything =
       createFile('$basePath/views/screen/${feature}_screen.dart', '''
 import 'package:flutter/material.dart';
@@ -263,7 +263,7 @@ class ${pascalFeature}Screen extends StatelessWidget {
   }
 }
 ''') ||
-      createdAnything;
+          createdAnything;
 
   // Final log
   if (createdAnything) {
@@ -305,10 +305,10 @@ String toPascalCase(String text) {
       .split('_')
       .map(
         (word) =>
-            word.isNotEmpty
-                ? '${word[0].toUpperCase()}${word.substring(1)}'
-                : '',
-      )
+    word.isNotEmpty
+        ? '${word[0].toUpperCase()}${word.substring(1)}'
+        : '',
+  )
       .join();
 }
 

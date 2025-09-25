@@ -70,7 +70,7 @@ Confirms and deletes the feature directory based on previously saved config.
 
 
 
-## 🔄 Reset Configuration
+## 🔄 Reset Configuration (if did mistake)
 
 ```
 # Windows
