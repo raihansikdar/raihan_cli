@@ -5,7 +5,7 @@ const configFilePath = 'tool/.cli_architecture_config';
 void runCli(List<String> args) async {
   if (args.isEmpty) {
     print(
-        '❌ Please provide a feature name.\nUsage: raihan_cli.dart <feature_name> [optional_parent_path]\n');
+        '❌ Please provide a feature name.\nUsage: raihan_cli.dart <feature_name>\n');
     return;
   }
 
@@ -113,7 +113,6 @@ void runCli(List<String> args) async {
   }
 
 
-
   // Step 2: Choose state management
 String? stateManagement = pathConfig['stateManagement'];
 if (stateManagement == null) {
@@ -146,45 +145,6 @@ if (stateManagement == null) {
     return;
   }
 }
-
-
-  // // Step 3: Load or ask architecture
-  // String? architecture = pathConfig['architecture'];
-  // if (args.length > 1 &&
-  //     args[1].toLowerCase() != 'mvc' &&
-  //     args[1].toLowerCase() != 'mvvm') {
-  //   architecture = args[1].toLowerCase();
-  //   try {
-  //     _saveConfig({..._readConfig(), 'architecture': architecture});
-  //   } catch (e) {
-  //     print('❌ Failed to save architecture configuration: $e');
-  //     return;
-  //   }
-  // }
-  //
-  // if (architecture == null) {
-  //   print('\n🧱 Choose architecture:');
-  //   print('1. mvc');
-  //   print('2. mvvm');
-  //   stdout.write('Enter your choice (1 or 2): ');
-  //   final input = stdin.readLineSync();
-  //
-  //   if (input == '1') {
-  //     architecture = 'mvc';
-  //   } else if (input == '2') {
-  //     architecture = 'mvvm';
-  //   } else {
-  //     print('❌ Invalid architecture choice. Aborting.');
-  //     return;
-  //   }
-  //
-  //   try {
-  //     _saveConfig({..._readConfig(), 'architecture': architecture});
-  //   } catch (e) {
-  //     print('❌ Failed to save architecture configuration: $e');
-  //     return;
-  //   }
-  // }
 
   // Step 3: Load or ask architecture
   String? architecture = pathConfig['architecture'];

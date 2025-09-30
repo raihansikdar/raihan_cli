@@ -1,7 +1,6 @@
 # 🚀 raihan_cli – Flutter Feature Scaffolding CLI Tool
 
-`raihan_cli` is a Dart-based command-line tool designed to **automate feature creation and deletion** in Flutter projects using the **MVC** or **MVVM** architectural patterns. It helps developers maintain a clean and consistent project structure while saving time on repetitive boilerplate setup.
-
+`raihan_cli` is a Dart-based command-line tool designed to **automate feature creation and deletion** in Flutter projects using the **MVC** or **MVVM** architectural patterns with **GetX**, **Provider**, or **BLoC** state management. It helps developers maintain a clean and consistent project structure while saving time on repetitive boilerplate setup.
 ---
 
 ## 📦 Installation
@@ -20,9 +19,10 @@ dart pub global activate --source git https://github.com/raihansikdar/raihan_cli
 ## 📁 What It Does
 
 1. ✅ Scaffolds folders and files for new features (MVC or MVVM)
-2. 🗑️ Removes entire feature folders safely
-3. 🔧 Saves architecture and path preferences to reduce prompts
-4. 🛠️ Supports custom folder paths (e.g., lib/core/feature_name) or default feature-based structure (lib/src/features/feature_name)
+2. 🛠️ Supports GetX, Provider, and BLoC state management
+3. 🗑️ Removes entire feature folders safely
+4. 🔧 Saves architecture and path preferences to reduce prompts
+5. 🛠️ Supports custom folder paths (e.g., lib/core/feature_name) or default feature-based structure (lib/src/features/feature_name)
 
 ## 🧪 Basic Usage
 ### ▶️ Create a New Feature
@@ -34,7 +34,7 @@ raihan_cli <feature_name>
 
 You’ll be prompted to choose:
 
-Folder structure type:
+### 1️⃣ Folder Structure Type:
 
 1: Default (lib/src/features/<feature_name>)
 
@@ -43,17 +43,27 @@ Folder structure type:
 
 > **Note:** You must configure the path type on the first run. The tool will remember your choice.
 
+### 2️⃣ State Management:
 
-Architecture type:
+1. getx
 
-1: MVC
+2. provider
 
-2: MVVM
+3. bloc
 
 > **Note:** You must configure the state management on the first run. The tool will remember your choice.
 
+### 3️⃣ Architecture type:
 
-Then your feature folder will create successfully.
+1. mvc
+
+2. mvvm
+
+
+> **Note:** You must configure Architecture on the first run. The tool will remember your choice.
+
+
+### Then your feature folder will create successfully.
 
 
 ### If folder is not showing then collapse your parent folder like this
@@ -66,7 +76,7 @@ raihan_cli remove <feature_name>
 > **Example:** raihan_cli remove product <br>
 > **Note:** If folder is still showing then collapse your parent folder.
 
-Confirms and deletes the feature directory based on previously saved config.
+This confirms and deletes the feature directory based on your saved configuration..
 
 
 
@@ -90,12 +100,15 @@ dart pub global deactivate raihan_cli
 
 
 
-## 💡 Architecture Details
+## 💡 Architecture + State Management Examples
 
-### 📁 MVC Folder Structure
+
+## 📁 MVC Folder Structure
+
+### 📁 MVC + GetX
 
 ```
-lib/src/features/<feature_name>/
+lib/src/features/<feature_name>/    # if custom path is "features"
 ├── controllers/
 │   └── <feature_name>_controller.dart
 ├── model/
@@ -104,11 +117,46 @@ lib/src/features/<feature_name>/
     ├── screen/
     │   └── <feature_name>_screen.dart
     └── widget/
+
 ```
 
-### 📁 MVVM Folder Structure
+### 📁 MVC + Provider
+
 ```
-lib/features/<feature_name>/   # if custom path is "features"
+lib/src/features/<feature_name>/      # if custom path is "features"
+├── provider/
+│   └── <feature_name>_provider.dart
+├── model/
+│   └── <feature_name>_model.dart
+└── views/
+    ├── screen/
+    │   └── <feature_name>_screen.dart
+    └── widget/
+
+```
+
+### 📁 MVC + BLoC
+
+```
+lib/src/features/<feature_name>/
+├── bloc/
+│   ├── <feature_name>_bloc.dart
+│   ├── <feature_name>_event.dart
+│   └── <feature_name>_state.dart
+├── model/
+│   └── <feature_name>_model.dart
+└── views/
+    ├── screen/
+    │   └── <feature_name>_screen.dart
+    └── widget/
+
+```
+
+## 📁 MVVM Folder Structure
+
+### 📁 MVVM + GetX
+```
+lib/features/<feature_name>/     # if custom path is "features"
 ├── model/
 │   └── <feature_name>_model.dart
 ├── view_model/
@@ -122,6 +170,48 @@ lib/features/<feature_name>/   # if custom path is "features"
     └── widget/
 
 ```
+
+
+### 📁 MVVM + Provider
+```
+lib/features/<feature_name>/       # if custom path is "features"
+├── view_model_provider/ 
+│   └── <feature_name>_view_model_provider.dart
+├── repository/
+│   ├── <feature_name>_repository.dart
+│   └── <feature_name>_repository_impl.dart
+├── model/
+│   └── <feature_name>_model.dart
+└── views/
+    ├── screen/
+    │   └── <feature_name>_screen.dart
+    └── widget/
+
+
+```
+
+
+
+### 📁 MVVM + BLoC
+```
+lib/features/<feature_name>/      # if custom path is "features"
+├── bloc/
+│   ├── <feature_name>_bloc.dart
+│   ├── <feature_name>_event.dart
+│   └── <feature_name>_state.dart
+├── repository/
+│   ├── <feature_name>_repository.dart
+│   └── <feature_name>_repository_impl.dart
+├── model/
+│   └── <feature_name>_model.dart
+└── views/
+    ├── screen/
+    │   └── <feature_name>_screen.dart
+    └── widget/
+
+
+```
+
 
 
 
