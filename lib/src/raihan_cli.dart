@@ -103,9 +103,39 @@ void runCli(List<String> args) async {
     return;
   }
 
+  // // Step 2: Choose state management
+  // String? stateManagement = pathConfig['stateManagement'];
+  // if (stateManagement == null) {
+  //   print('\n🛠 Choose state management:');
+  //   print('1. getx');
+  //   print('2. provider');
+  //   print('3. bloc');
+  //   stdout.write('Enter your choice (1/2/3): ');
+  //   final input = stdin.readLineSync()?.trim();
+
+  //   if (input == '2') {
+  //     stateManagement = 'provider';
+  //   } else if (input == '3') {
+  //     stateManagement = 'bloc';
+  //   } else {
+  //     stateManagement = 'getx'; // default
+  //   }
+
+  //   try {
+  //     _saveConfig({..._readConfig(), 'stateManagement': stateManagement});
+  //   } catch (e) {
+  //     print('❌ Failed to save state management configuration: $e');
+  //     return;
+  //   }
+  // }
+
+
+
+
   // Step 2: Choose state management
-  String? stateManagement = pathConfig['stateManagement'];
-  if (stateManagement == null) {
+String? stateManagement = pathConfig['stateManagement'];
+if (stateManagement == null) {
+  while (true) {
     print('\n🛠 Choose state management:');
     print('1. getx');
     print('2. provider');
@@ -113,21 +143,28 @@ void runCli(List<String> args) async {
     stdout.write('Enter your choice (1/2/3): ');
     final input = stdin.readLineSync()?.trim();
 
-    if (input == '2') {
+    if (input == '1') {
+      stateManagement = 'getx';
+      break;
+    } else if (input == '2') {
       stateManagement = 'provider';
+      break;
     } else if (input == '3') {
       stateManagement = 'bloc';
+      break;
     } else {
-      stateManagement = 'getx'; // default
-    }
-
-    try {
-      _saveConfig({..._readConfig(), 'stateManagement': stateManagement});
-    } catch (e) {
-      print('❌ Failed to save state management configuration: $e');
-      return;
+      print('❌ Invalid choice. Please try again.');
     }
   }
+
+  try {
+    _saveConfig({..._readConfig(), 'stateManagement': stateManagement});
+  } catch (e) {
+    print('❌ Failed to save state management configuration: $e');
+    return;
+  }
+}
+
 
   // Step 3: Load or ask architecture
   String? architecture = pathConfig['architecture'];
