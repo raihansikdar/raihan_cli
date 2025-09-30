@@ -1,7 +1,6 @@
 # 🚀 raihan_cli – Flutter Feature Scaffolding CLI Tool
----
-`raihan_cli` is a Dart-based command-line tool designed to **automate feature creation and deletion** in Flutter projects using the **MVC** or **MVVM** architectural patterns with **GetX**, **Provider**, or **BLoC** state management. It helps developers maintain a clean and consistent project structure while saving time on repetitive boilerplate setup.
----
+
+<p>`raihan_cli` is a Dart-based command-line tool designed to **automate feature creation and deletion** in Flutter projects using the **MVC** or **MVVM** architectural patterns with **GetX**, **Provider**, or **BLoC** state management. It helps developers maintain a clean and consistent project structure while saving time on repetitive boilerplate setup.</p>
 
 ## 📦 Installation
 
@@ -19,9 +18,13 @@ dart pub global activate --source git https://github.com/raihansikdar/raihan_cli
 ## 📁 What It Does
 
 1. ✅ Scaffolds folders and files for new features (MVC or MVVM)
+
 2. 🛠️ Supports GetX, Provider, and BLoC state management
+
 3. 🗑️ Removes entire feature folders safely
+
 4. 🔧 Saves architecture and path preferences to reduce prompts
+
 5. 🛠️ Supports custom folder paths (e.g., lib/core/feature_name) or default feature-based structure (lib/src/features/feature_name)
 
 ## 🧪 Basic Usage
@@ -91,7 +94,7 @@ rm tool/.cli_architecture_config
 
 ```
 
-✅ Deactivating the CLI Package:
+## ✅ Deactivating the CLI Package:
 ```
 dart pub global deactivate raihan_cli
 
@@ -187,7 +190,6 @@ lib/features/<feature_name>/       # if custom path is "features"
     │   └── <feature_name>_screen.dart
     └── widget/
 
-
 ```
 
 
@@ -208,7 +210,6 @@ lib/features/<feature_name>/      # if custom path is "features"
     ├── screen/
     │   └── <feature_name>_screen.dart
     └── widget/
-
 
 ```
 
