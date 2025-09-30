@@ -141,7 +141,7 @@ lib/src/features/<feature_name>/      # if custom path is "features"
 ### 📁 MVC + BLoC
 
 ```
-lib/src/features/<feature_name>/
+lib/src/features/<feature_name>/       # if custom path is "features"
 ├── bloc/
 │   ├── <feature_name>_bloc.dart
 │   ├── <feature_name>_event.dart
