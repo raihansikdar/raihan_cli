@@ -1,6 +1,6 @@
 # 🚀 raihan_cli – Flutter Feature Scaffolding CLI Tool
-
-<p>`raihan_cli` is a Dart-based command-line tool designed to **automate feature creation and deletion** in Flutter projects using the **MVC** or **MVVM** architectural patterns with **GetX**, **Provider**, or **BLoC** state management. It helps developers maintain a clean and consistent project structure while saving time on repetitive boilerplate setup.</p>
+---
+`raihan_cli` is a Dart-based command-line tool designed to **automate feature creation and deletion** in Flutter projects using the **MVC** or **MVVM** architectural patterns with **GetX**, **Provider**, or **BLoC** state management. It helps developers maintain a clean and consistent project structure while saving time on repetitive boilerplate setup.
 ---
 
 ## 📦 Installation
