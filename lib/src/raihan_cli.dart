@@ -5,7 +5,7 @@ const configFilePath = 'tool/.cli_architecture_config';
 void runCli(List<String> args) async {
   if (args.isEmpty) {
     print(
-        '❌ Please provide a feature name.\nUsage: dart tool/raihan_cli.dart <feature_name> [optional_parent_path]');
+        '❌ Please provide a feature name.\nUsage: dart tool/raihan_cli.dart <feature_name> [optional_parent_path]\n');
     return;
   }
 
@@ -57,22 +57,64 @@ void runCli(List<String> args) async {
   final feature = args[0];
   final pascalFeature = toPascalCase(feature);
 
+  // // Step 1: Load or ask path config
+  // final pathConfig = _readConfig();
+  // String? pathType = pathConfig['pathType'];
+  // String? customParent = pathConfig['customPath'];
+  //
+  // if (pathType == null) {
+  //   print('\n📁 Choose path type:');
+  //   print('1. Feature-based path (lib/src/features/$feature)');
+  //   print('2. Custom path (lib/<your_parent_path>/$feature)');
+  //   stdout.write('Enter your choice (1 or 2): ');
+  //   pathType = stdin.readLineSync()?.trim();
+  //
+  //   if (pathType == '2') {
+  //     stdout.write(
+  //         '📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ');
+  //     customParent = stdin.readLineSync()?.trim() ?? '';
+  //   }
+  //
+  //   try {
+  //     _saveConfig({
+  //       ...pathConfig,
+  //       'pathType': pathType ?? '',
+  //       'customPath': (customParent ?? '').toString(),
+  //     });
+  //
+  //     final updatedConfig = _readConfig();
+  //     pathType = updatedConfig['pathType'];
+  //     customParent = updatedConfig['customPath'];
+  //   } catch (e) {
+  //     print('❌ Failed to save path configuration: $e');
+  //     return;
+  //   }
+  // }
+
+
   // Step 1: Load or ask path config
   final pathConfig = _readConfig();
   String? pathType = pathConfig['pathType'];
   String? customParent = pathConfig['customPath'];
 
   if (pathType == null) {
-    print('\n📁 Choose path type:');
-    print('1. Feature-based path (lib/src/features/$feature)');
-    print('2. Custom path (lib/<your_parent_path>/$feature)');
-    stdout.write('Enter your choice (1 or 2): ');
-    pathType = stdin.readLineSync()?.trim();
+    while (true) {
+      print('\n📁 Choose path type:');
+      print('1. Feature-based path (lib/src/features/$feature)');
+      print('2. Custom path (lib/<your_parent_path>/$feature)');
+      stdout.write('Enter your choice (1 or 2): ');
+      pathType = stdin.readLineSync()?.trim();
 
-    if (pathType == '2') {
-      stdout.write(
-          '📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ');
-      customParent = stdin.readLineSync()?.trim() ?? '';
+      if (pathType == '1' || pathType == '2') {
+        if (pathType == '2') {
+          stdout.write(
+              '📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ');
+          customParent = stdin.readLineSync()?.trim() ?? '';
+        }
+        break;
+      } else {
+        print('❌ Invalid choice. Please try again.');
+      }
     }
 
     try {
@@ -81,7 +123,6 @@ void runCli(List<String> args) async {
         'pathType': pathType ?? '',
         'customPath': (customParent ?? '').toString(),
       });
-
       final updatedConfig = _readConfig();
       pathType = updatedConfig['pathType'];
       customParent = updatedConfig['customPath'];
@@ -90,6 +131,8 @@ void runCli(List<String> args) async {
       return;
     }
   }
+
+
 
   String basePath;
   if (pathType == '1') {
@@ -102,33 +145,6 @@ void runCli(List<String> args) async {
     print('❌ Invalid path choice. Aborting.');
     return;
   }
-
-  // // Step 2: Choose state management
-  // String? stateManagement = pathConfig['stateManagement'];
-  // if (stateManagement == null) {
-  //   print('\n🛠 Choose state management:');
-  //   print('1. getx');
-  //   print('2. provider');
-  //   print('3. bloc');
-  //   stdout.write('Enter your choice (1/2/3): ');
-  //   final input = stdin.readLineSync()?.trim();
-
-  //   if (input == '2') {
-  //     stateManagement = 'provider';
-  //   } else if (input == '3') {
-  //     stateManagement = 'bloc';
-  //   } else {
-  //     stateManagement = 'getx'; // default
-  //   }
-
-  //   try {
-  //     _saveConfig({..._readConfig(), 'stateManagement': stateManagement});
-  //   } catch (e) {
-  //     print('❌ Failed to save state management configuration: $e');
-  //     return;
-  //   }
-  // }
-
 
 
 
@@ -166,34 +182,64 @@ if (stateManagement == null) {
 }
 
 
+  // // Step 3: Load or ask architecture
+  // String? architecture = pathConfig['architecture'];
+  // if (args.length > 1 &&
+  //     args[1].toLowerCase() != 'mvc' &&
+  //     args[1].toLowerCase() != 'mvvm') {
+  //   architecture = args[1].toLowerCase();
+  //   try {
+  //     _saveConfig({..._readConfig(), 'architecture': architecture});
+  //   } catch (e) {
+  //     print('❌ Failed to save architecture configuration: $e');
+  //     return;
+  //   }
+  // }
+  //
+  // if (architecture == null) {
+  //   print('\n🧱 Choose architecture:');
+  //   print('1. mvc');
+  //   print('2. mvvm');
+  //   stdout.write('Enter your choice (1 or 2): ');
+  //   final input = stdin.readLineSync();
+  //
+  //   if (input == '1') {
+  //     architecture = 'mvc';
+  //   } else if (input == '2') {
+  //     architecture = 'mvvm';
+  //   } else {
+  //     print('❌ Invalid architecture choice. Aborting.');
+  //     return;
+  //   }
+  //
+  //   try {
+  //     _saveConfig({..._readConfig(), 'architecture': architecture});
+  //   } catch (e) {
+  //     print('❌ Failed to save architecture configuration: $e');
+  //     return;
+  //   }
+  // }
+
   // Step 3: Load or ask architecture
   String? architecture = pathConfig['architecture'];
-  if (args.length > 1 &&
-      args[1].toLowerCase() != 'mvc' &&
-      args[1].toLowerCase() != 'mvvm') {
-    architecture = args[1].toLowerCase();
-    try {
-      _saveConfig({..._readConfig(), 'architecture': architecture});
-    } catch (e) {
-      print('❌ Failed to save architecture configuration: $e');
-      return;
-    }
-  }
 
   if (architecture == null) {
-    print('\n🧱 Choose architecture:');
-    print('1. mvc');
-    print('2. mvvm');
-    stdout.write('Enter your choice (1 or 2): ');
-    final input = stdin.readLineSync();
+    while (true) {
+      print('\n🧱 Choose architecture:');
+      print('1. mvc');
+      print('2. mvvm');
+      stdout.write('Enter your choice (1 or 2): ');
+      final input = stdin.readLineSync()?.trim();
 
-    if (input == '1') {
-      architecture = 'mvc';
-    } else if (input == '2') {
-      architecture = 'mvvm';
-    } else {
-      print('❌ Invalid architecture choice. Aborting.');
-      return;
+      if (input == '1') {
+        architecture = 'mvc';
+        break;
+      } else if (input == '2') {
+        architecture = 'mvvm';
+        break;
+      } else {
+        print('❌ Invalid choice. Please try again.');
+      }
     }
 
     try {
@@ -203,6 +249,9 @@ if (stateManagement == null) {
       return;
     }
   }
+
+
+
 
   // Step 4: Create base folder
   final featureDir = Directory(basePath);
