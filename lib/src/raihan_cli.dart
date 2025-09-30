@@ -5,7 +5,7 @@ const configFilePath = 'tool/.cli_architecture_config';
 void runCli(List<String> args) async {
   if (args.isEmpty) {
     print(
-        '❌ Please provide a feature name.\nUsage: dart tool/raihan_cli.dart <feature_name> [optional_parent_path]\n');
+        '❌ Please provide a feature name.\nUsage: raihan_cli.dart <feature_name> [optional_parent_path]\n');
     return;
   }
 
@@ -13,7 +13,7 @@ void runCli(List<String> args) async {
   if (args[0] == 'remove') {
     if (args.length < 2) {
       print(
-          '❌ Please provide a feature name to remove.\nUsage: dart tool/raihan_cli.dart remove <feature_name>');
+          '❌ Please provide a feature name to remove.\nUsage: raihan_cli.dart remove <feature_name>');
       return;
     }
 
@@ -57,40 +57,6 @@ void runCli(List<String> args) async {
   final feature = args[0];
   final pascalFeature = toPascalCase(feature);
 
-  // // Step 1: Load or ask path config
-  // final pathConfig = _readConfig();
-  // String? pathType = pathConfig['pathType'];
-  // String? customParent = pathConfig['customPath'];
-  //
-  // if (pathType == null) {
-  //   print('\n📁 Choose path type:');
-  //   print('1. Feature-based path (lib/src/features/$feature)');
-  //   print('2. Custom path (lib/<your_parent_path>/$feature)');
-  //   stdout.write('Enter your choice (1 or 2): ');
-  //   pathType = stdin.readLineSync()?.trim();
-  //
-  //   if (pathType == '2') {
-  //     stdout.write(
-  //         '📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ');
-  //     customParent = stdin.readLineSync()?.trim() ?? '';
-  //   }
-  //
-  //   try {
-  //     _saveConfig({
-  //       ...pathConfig,
-  //       'pathType': pathType ?? '',
-  //       'customPath': (customParent ?? '').toString(),
-  //     });
-  //
-  //     final updatedConfig = _readConfig();
-  //     pathType = updatedConfig['pathType'];
-  //     customParent = updatedConfig['customPath'];
-  //   } catch (e) {
-  //     print('❌ Failed to save path configuration: $e');
-  //     return;
-  //   }
-  // }
-
 
   // Step 1: Load or ask path config
   final pathConfig = _readConfig();
@@ -113,7 +79,7 @@ void runCli(List<String> args) async {
         }
         break;
       } else {
-        print('❌ Invalid choice. Please try again.');
+        print('❌ Invalid path choice. Please try again.');
       }
     }
 
@@ -169,7 +135,7 @@ if (stateManagement == null) {
       stateManagement = 'bloc';
       break;
     } else {
-      print('❌ Invalid choice. Please try again.');
+      print('❌ Invalid state management choice. Please try again.');
     }
   }
 
@@ -238,7 +204,7 @@ if (stateManagement == null) {
         architecture = 'mvvm';
         break;
       } else {
-        print('❌ Invalid choice. Please try again.');
+        print('❌ Invalid architecture choice. Please try again.');
       }
     }
 
