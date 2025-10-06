@@ -44,7 +44,7 @@ You’ll be prompted to choose:
 2: Custom (lib/<custom_path>/<feature_name>)
 
 
-> **Note:** You must configure the path type on the first run. The tool will remember your choice.
+> **Note:** You must configure the path type on the first run. The package will remember your choice.
 
 ### 2️⃣ State Management:
 
@@ -54,7 +54,7 @@ You’ll be prompted to choose:
 
 3. bloc
 
-> **Note:** You must configure the state management on the first run. The tool will remember your choice.
+> **Note:** You must configure the state management on the first run. The package will remember your choice.
 
 ### 3️⃣ Architecture type:
 
