@@ -57,6 +57,7 @@ void runCli(List<String> args) async {
   final feature = args[0];
   final pascalFeature = toPascalCase(feature);
 
+
   // Step 1: Load or ask path config
   final pathConfig = _readConfig();
   String? pathType = pathConfig['pathType'];
@@ -97,6 +98,8 @@ void runCli(List<String> args) async {
     }
   }
 
+
+
   String basePath;
   if (pathType == '1') {
     basePath = 'lib/src/features/$feature';
@@ -109,6 +112,7 @@ void runCli(List<String> args) async {
     return;
   }
 
+
   // Step 2: Choose state management
   String? stateManagement = pathConfig['stateManagement'];
   if (stateManagement == null) {
@@ -116,11 +120,8 @@ void runCli(List<String> args) async {
       print('\n🛠 Choose state management:');
       print('1. getx');
       print('2. provider');
-      print('3. riverpod'); // new
-      print('4. bloc');     // shifted
-      print('5. others');   // default GetX
-      stdout.write('Enter your choice (1/2/3/4/5): ');
-
+      print('3. bloc');
+      stdout.write('Enter your choice (1/2/3): ');
       final input = stdin.readLineSync()?.trim();
 
       if (input == '1') {
@@ -130,13 +131,7 @@ void runCli(List<String> args) async {
         stateManagement = 'provider';
         break;
       } else if (input == '3') {
-        stateManagement = 'riverpod';
-        break;
-      } else if (input == '4') {
         stateManagement = 'bloc';
-        break;
-      } else if (input == '5') {
-        stateManagement = 'others';
         break;
       } else {
         print('❌ Invalid state management choice. Please try again.');
@@ -181,6 +176,9 @@ void runCli(List<String> args) async {
     }
   }
 
+
+
+
   // Step 4: Create base folder
   final featureDir = Directory(basePath);
   bool createdAnything = false;
@@ -211,22 +209,18 @@ void runCli(List<String> args) async {
     } else if (architecture == 'mvvm') {
       folders = ['$basePath/bloc', '$basePath/repository', ...folders];
     }
-  } else if (stateManagement == 'provider') {
-    if (architecture == 'mvc') {
-      folders.add('$basePath/provider');
-    } else if (architecture == 'mvvm') {
-      folders.addAll(['$basePath/view_model_provider', '$basePath/repository']);
-    }
-  } else if (stateManagement == 'riverpod') {
-    if (architecture == 'mvc') {
-      folders.add('$basePath/riverpod');
-    } else if (architecture == 'mvvm') {
-      folders.addAll(['$basePath/view_model_riverpod', '$basePath/repository']);
-    }
   } else if (architecture == 'mvc') {
-    folders.add('$basePath/controllers'); // default for getx/others
+    if (stateManagement == 'provider') {
+      folders.add('$basePath/provider');
+    } else {
+      folders.add('$basePath/controllers');
+    }
   } else if (architecture == 'mvvm') {
-    folders.addAll(['$basePath/view_model', '$basePath/repository']); // default for getx/others
+    if (stateManagement == 'provider') {
+      folders.addAll(['$basePath/view_model_provider', '$basePath/repository']);
+    } else {
+      folders.addAll(['$basePath/view_model', '$basePath/repository']);
+    }
   }
 
   for (final folder in folders) {
@@ -249,67 +243,14 @@ void runCli(List<String> args) async {
   if (stateManagement == 'bloc') {
     final blocFolder = '$basePath/bloc';
     createdAnything = createFile('$blocFolder/${feature}_bloc.dart',
-        '// BLoC for $feature\n') || createdAnything;
+        '// BLoC for $feature\n') ||
+        createdAnything;
     createdAnything = createFile('$blocFolder/${feature}_event.dart',
-        '// Event for $feature\n') || createdAnything;
+        '// Event for $feature\n') ||
+        createdAnything;
     createdAnything = createFile('$blocFolder/${feature}_state.dart',
-        '// State for $feature\n') || createdAnything;
-
-    if (architecture == 'mvvm') {
-      final repoFolder = '$basePath/repository';
-      createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
-abstract class ${pascalFeature}Repository {
-  // Define your abstract methods here
-}
-''') || createdAnything;
-
-      createdAnything = createFile('$repoFolder/${feature}_repository_impl.dart', '''
-import '${feature}_repository.dart';
-
-class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
-  // Implement methods here
-}
-''') || createdAnything;
-    }
-  } else if (stateManagement == 'provider') {
-    if (architecture == 'mvc') {
-      createdAnything = createFile(
-          '$basePath/provider/${feature}_provider.dart',
-          '// Provider for $feature (MVC with Provider)\n') ||
-          createdAnything;
-    } else {
-      createdAnything = createFile(
-          '$basePath/view_model_provider/${feature}_view_model_provider.dart',
-          '// ViewModel (Provider) for $feature\n') ||
-          createdAnything;
-
-      final repoFolder = '$basePath/repository';
-      createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
-abstract class ${pascalFeature}Repository {
-  // Define your abstract methods here
-}
-''') || createdAnything;
-
-      createdAnything = createFile('$repoFolder/${feature}_repository_impl.dart', '''
-import '${feature}_repository.dart';
-
-class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
-  // Implement methods here
-}
-''') || createdAnything;
-    }
-  } else if (stateManagement == 'riverpod') {
-    final riverpodFolder = (architecture == 'mvc')
-        ? '$basePath/riverpod'
-        : '$basePath/view_model_riverpod';
-
-    createdAnything = createFile(
-        '$riverpodFolder/${feature}_notifier.dart',
-        '// Riverpod Notifier for $feature\n') || createdAnything;
-
-    createdAnything = createFile(
-        '$riverpodFolder/${feature}_provider.dart',
-        '// Riverpod Provider for $feature\n') || createdAnything;
+        '// State for $feature\n') ||
+        createdAnything;
 
     if (architecture == 'mvvm') {
       final repoFolder = '$basePath/repository';
@@ -328,11 +269,27 @@ class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
 ''') || createdAnything;
     }
   } else if (architecture == 'mvc') {
-    createdAnything = createFile('$basePath/controllers/${feature}_controller.dart',
-        '// Controller for $feature (MVC)\n') || createdAnything;
+    if (stateManagement == 'provider') {
+      createdAnything = createFile(
+          '$basePath/provider/${feature}_provider.dart',
+          '// Provider for $feature (MVC with Provider)\n') ||
+          createdAnything;
+    } else {
+      createdAnything = createFile('$basePath/controllers/${feature}_controller.dart',
+          '// Controller for $feature (MVC)\n') ||
+          createdAnything;
+    }
   } else if (architecture == 'mvvm') {
-    createdAnything = createFile('$basePath/view_model/${feature}_view_model.dart',
-        '// ViewModel for $feature (MVVM)\n') || createdAnything;
+    if (stateManagement == 'provider') {
+      createdAnything = createFile(
+          '$basePath/view_model_provider/${feature}_view_model_provider.dart',
+          '// ViewModel (Provider) for $feature\n') ||
+          createdAnything;
+    } else {
+      createdAnything = createFile('$basePath/view_model/${feature}_view_model.dart',
+          '// ViewModel for $feature (MVVM)\n') ||
+          createdAnything;
+    }
 
     final repoFolder = '$basePath/repository';
     createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
@@ -351,7 +308,8 @@ class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   }
 
   createdAnything = createFile('$basePath/model/${feature}_model.dart',
-      '// Model for $feature\n') || createdAnything;
+      '// Model for $feature\n') ||
+      createdAnything;
 
   createdAnything = createFile('$basePath/views/screen/${feature}_screen.dart', '''
 import 'package:flutter/material.dart';
@@ -367,7 +325,8 @@ class ${pascalFeature}Screen extends StatelessWidget {
     );
   }
 }
-''') || createdAnything;
+''') ||
+      createdAnything;
 
   if (createdAnything) {
     print(
