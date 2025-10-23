@@ -6,33 +6,33 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [1.2.0] - 2025-09-30
+## [2.0.0] - 2025-10-24
 
-### ✨ Enhancements
+## ✨ Enhancements
 - 🛠 **State Management Support**
-  - Added **GetX, Provider, and BLoC** options for feature scaffolding.
+  - Added **GetX, Provider, BLoC, and Riverpod** options for feature scaffolding.
   - CLI now prompts for state management on the first run and remembers the choice.
 
 - 📁 **Improved Folder Structure Handling**
-  - Folder structures now adapt based on **architecture + state management** combination.
-  - Automatic creation of repository folders and files for MVVM features.
-  - BLoC scaffolding includes `<feature>_bloc.dart`, `<feature>_event.dart`, and `<feature>_state.dart`.
+  - Folder structures adapt automatically based on **architecture + state management** combination.
+  - Automatic creation of **repository folders and files** for MVVM features.
+  - **BLoC scaffolding** includes `<feature>_bloc.dart`, `<feature>_event.dart`, and `<feature>_state.dart`.
+  - **Riverpod scaffolding** now splits provider logic into **notifier + provider files** for clean separation.
 
 - 💡 **Better CLI UX**
-  - Refined prompts for path type, state management, and architecture.
+  - Refined prompts for **path type, state management, and architecture**.
   - Clearer print statements for created folders and files.
-  - Enhanced handling of existing folders and files with appropriate warnings.
+  - Enhanced handling of **existing folders and files** with appropriate warnings.
 
 - ⚡ **Configuration Improvements**
-  - Saves **state management** choice in the config file.
-  - Handles custom paths more robustly.
+  - Saves **state management choice** in the config file.
+  - Handles **custom paths** more robustly.
   - Reduced redundant config file reads.
 
-### 🛠️ Code Quality
-- Refactored feature creation logic to handle all combinations of **MVC/MVVM + GetX/Provider/BLoC**.
-- Improved maintainability of file/folder creation and prompts.
+## 🛠️ Code Quality
+- Refactored feature creation logic to handle all combinations of **MVC/MVVM + GetX/Provider/BLoC/Riverpod**.
+- Improved maintainability of **file/folder creation and prompts**.
 - Consolidated exception handling and validation checks.
-
 ---
 
 ## [1.1.0] - 2025-09-25

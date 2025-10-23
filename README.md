@@ -138,6 +138,23 @@ lib/src/features/<feature_name>/      # if custom path is "features"
 
 ```
 
+
+### 📁 MVC + Riverpod
+
+```
+lib/src/features/<feature_name>/      
+├── provider/
+│   ├── <feature_name>_notifier.dart      # StateNotifier / AsyncNotifier class
+│   └── <feature_name>_provider.dart      # Riverpod provider exposing the notifier
+├── model/
+│   └── <feature_name>_model.dart
+└── views/
+    ├── screen/
+    │   └── <feature_name>_screen.dart
+    └── widget/
+    
+```
+
 ### 📁 MVC + BLoC
 
 ```
@@ -192,6 +209,24 @@ lib/features/<feature_name>/       # if custom path is "features"
 
 ```
 
+### 📁 MVVM + Riverpod
+
+```
+lib/features/<feature_name>/           
+├── view_model_provider/
+│   ├── <feature_name>_notifier.dart      # StateNotifier / AsyncNotifier class
+│   └── <feature_name>_provider.dart      # Riverpod provider exposing the notifier
+├── repository/
+│   ├── <feature_name>_repository.dart
+│   └── <feature_name>_repository_impl.dart
+├── model/
+│   └── <feature_name>_model.dart
+└── views/
+    ├── screen/
+    │   └── <feature_name>_screen.dart
+    └── widget/
+
+```
 
 
 ### 📁 MVVM + BLoC

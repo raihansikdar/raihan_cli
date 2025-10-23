@@ -5,7 +5,8 @@ const configFilePath = 'tool/.cli_architecture_config';
 void runCli(List<String> args) async {
   if (args.isEmpty) {
     print(
-        '❌ Please provide a feature name.\nUsage: raihan_cli.dart <feature_name>\n');
+      '❌ Please provide a feature name.\nUsage: raihan_cli.dart <feature_name>\n',
+    );
     return;
   }
 
@@ -13,7 +14,8 @@ void runCli(List<String> args) async {
   if (args[0] == 'remove') {
     if (args.length < 2) {
       print(
-          '❌ Please provide a feature name to remove.\nUsage: raihan_cli.dart remove <feature_name>');
+        '❌ Please provide a feature name to remove.\nUsage: raihan_cli.dart remove <feature_name>',
+      );
       return;
     }
 
@@ -26,9 +28,10 @@ void runCli(List<String> args) async {
     if (pathType == '1') {
       removePath = 'lib/src/features/$removeFeature';
     } else if (pathType == '2') {
-      removePath = (customParent == '.' || (customParent?.isEmpty ?? true))
-          ? 'lib/$removeFeature'
-          : 'lib/$customParent/$removeFeature';
+      removePath =
+          (customParent == '.' || (customParent?.isEmpty ?? true))
+              ? 'lib/$removeFeature'
+              : 'lib/$customParent/$removeFeature';
     } else {
       print('❌ Invalid path configuration. Cannot determine path for removal.');
       return;
@@ -73,7 +76,8 @@ void runCli(List<String> args) async {
       if (pathType == '1' || pathType == '2') {
         if (pathType == '2') {
           stdout.write(
-              '📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ');
+            '📁 Enter custom parent path (e.g., "feature" for lib/feature/$feature, or "." for lib/$feature): ',
+          );
           customParent = stdin.readLineSync()?.trim() ?? '';
         }
         break;
@@ -101,9 +105,10 @@ void runCli(List<String> args) async {
   if (pathType == '1') {
     basePath = 'lib/src/features/$feature';
   } else if (pathType == '2') {
-    basePath = (customParent == '.' || (customParent?.isEmpty ?? true))
-        ? 'lib/$feature'
-        : 'lib/$customParent/$feature';
+    basePath =
+        (customParent == '.' || (customParent?.isEmpty ?? true))
+            ? 'lib/$feature'
+            : 'lib/$customParent/$feature';
   } else {
     print('❌ Invalid path choice. Aborting.');
     return;
@@ -117,8 +122,8 @@ void runCli(List<String> args) async {
       print('1. getx');
       print('2. provider');
       print('3. riverpod'); // new
-      print('4. bloc');     // shifted
-      print('5. others');   // default GetX
+      print('4. bloc'); // shifted
+      print('5. others'); // default GetX
       stdout.write('Enter your choice (1/2/3/4/5): ');
 
       final input = stdin.readLineSync()?.trim();
@@ -226,7 +231,10 @@ void runCli(List<String> args) async {
   } else if (architecture == 'mvc') {
     folders.add('$basePath/controllers'); // default for getx/others
   } else if (architecture == 'mvvm') {
-    folders.addAll(['$basePath/view_model', '$basePath/repository']); // default for getx/others
+    folders.addAll([
+      '$basePath/view_model',
+      '$basePath/repository',
+    ]); // default for getx/others
   }
 
   for (final folder in folders) {
@@ -248,112 +256,164 @@ void runCli(List<String> args) async {
   // Step 6: Create files
   if (stateManagement == 'bloc') {
     final blocFolder = '$basePath/bloc';
-    createdAnything = createFile('$blocFolder/${feature}_bloc.dart',
-        '// BLoC for $feature\n') || createdAnything;
-    createdAnything = createFile('$blocFolder/${feature}_event.dart',
-        '// Event for $feature\n') || createdAnything;
-    createdAnything = createFile('$blocFolder/${feature}_state.dart',
-        '// State for $feature\n') || createdAnything;
+    createdAnything =
+        createFile(
+          '$blocFolder/${feature}_bloc.dart',
+          '// BLoC for $feature\n',
+        ) ||
+        createdAnything;
+    createdAnything =
+        createFile(
+          '$blocFolder/${feature}_event.dart',
+          '// Event for $feature\n',
+        ) ||
+        createdAnything;
+    createdAnything =
+        createFile(
+          '$blocFolder/${feature}_state.dart',
+          '// State for $feature\n',
+        ) ||
+        createdAnything;
 
     if (architecture == 'mvvm') {
       final repoFolder = '$basePath/repository';
-      createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository.dart', '''
 abstract class ${pascalFeature}Repository {
   // Define your abstract methods here
 }
-''') || createdAnything;
+''') ||
+          createdAnything;
 
-      createdAnything = createFile('$repoFolder/${feature}_repository_impl.dart', '''
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository_impl.dart', '''
 import '${feature}_repository.dart';
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   // Implement methods here
 }
-''') || createdAnything;
+''') ||
+          createdAnything;
     }
   } else if (stateManagement == 'provider') {
     if (architecture == 'mvc') {
-      createdAnything = createFile(
-          '$basePath/provider/${feature}_provider.dart',
-          '// Provider for $feature (MVC with Provider)\n') ||
+      createdAnything =
+          createFile(
+            '$basePath/provider/${feature}_provider.dart',
+            '// Provider for $feature (MVC with Provider)\n',
+          ) ||
           createdAnything;
     } else {
-      createdAnything = createFile(
-          '$basePath/view_model_provider/${feature}_view_model_provider.dart',
-          '// ViewModel (Provider) for $feature\n') ||
+      createdAnything =
+          createFile(
+            '$basePath/view_model_provider/${feature}_view_model_provider.dart',
+            '// ViewModel (Provider) for $feature\n',
+          ) ||
           createdAnything;
 
       final repoFolder = '$basePath/repository';
-      createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository.dart', '''
 abstract class ${pascalFeature}Repository {
   // Define your abstract methods here
 }
-''') || createdAnything;
+''') ||
+          createdAnything;
 
-      createdAnything = createFile('$repoFolder/${feature}_repository_impl.dart', '''
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository_impl.dart', '''
 import '${feature}_repository.dart';
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   // Implement methods here
 }
-''') || createdAnything;
+''') ||
+          createdAnything;
     }
   } else if (stateManagement == 'riverpod') {
-    final riverpodFolder = (architecture == 'mvc')
-        ? '$basePath/riverpod'
-        : '$basePath/view_model_riverpod';
+    final riverpodFolder =
+        (architecture == 'mvc')
+            ? '$basePath/riverpod'
+            : '$basePath/view_model_riverpod';
 
-    createdAnything = createFile(
-        '$riverpodFolder/${feature}_notifier.dart',
-        '// Riverpod Notifier for $feature\n') || createdAnything;
+    createdAnything =
+        createFile(
+          '$riverpodFolder/${feature}_notifier.dart',
+          '// Riverpod Notifier for $feature\n',
+        ) ||
+        createdAnything;
 
-    createdAnything = createFile(
-        '$riverpodFolder/${feature}_provider.dart',
-        '// Riverpod Provider for $feature\n') || createdAnything;
+    createdAnything =
+        createFile(
+          '$riverpodFolder/${feature}_provider.dart',
+          '// Riverpod Provider for $feature\n',
+        ) ||
+        createdAnything;
 
     if (architecture == 'mvvm') {
       final repoFolder = '$basePath/repository';
-      createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository.dart', '''
 abstract class ${pascalFeature}Repository {
   // Define your abstract methods here
 }
-''') || createdAnything;
+''') ||
+          createdAnything;
 
-      createdAnything = createFile('$repoFolder/${feature}_repository_impl.dart', '''
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository_impl.dart', '''
 import '${feature}_repository.dart';
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   // Implement methods here
 }
-''') || createdAnything;
+''') ||
+          createdAnything;
     }
   } else if (architecture == 'mvc') {
-    createdAnything = createFile('$basePath/controllers/${feature}_controller.dart',
-        '// Controller for $feature (MVC)\n') || createdAnything;
+    createdAnything =
+        createFile(
+          '$basePath/controllers/${feature}_controller.dart',
+          '// Controller for $feature (MVC)\n',
+        ) ||
+        createdAnything;
   } else if (architecture == 'mvvm') {
-    createdAnything = createFile('$basePath/view_model/${feature}_view_model.dart',
-        '// ViewModel for $feature (MVVM)\n') || createdAnything;
+    createdAnything =
+        createFile(
+          '$basePath/view_model/${feature}_view_model.dart',
+          '// ViewModel for $feature (MVVM)\n',
+        ) ||
+        createdAnything;
 
     final repoFolder = '$basePath/repository';
-    createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
+    createdAnything =
+        createFile('$repoFolder/${feature}_repository.dart', '''
 abstract class ${pascalFeature}Repository {
   // Define your abstract methods here
 }
-''') || createdAnything;
+''') ||
+        createdAnything;
 
-    createdAnything = createFile('$repoFolder/${feature}_repository_impl.dart', '''
+    createdAnything =
+        createFile('$repoFolder/${feature}_repository_impl.dart', '''
 import '${feature}_repository.dart';
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   // Implement methods here
 }
-''') || createdAnything;
+''') ||
+        createdAnything;
   }
 
-  createdAnything = createFile('$basePath/model/${feature}_model.dart',
-      '// Model for $feature\n') || createdAnything;
+  createdAnything =
+      createFile(
+        '$basePath/model/${feature}_model.dart',
+        '// Model for $feature\n',
+      ) ||
+      createdAnything;
 
-  createdAnything = createFile('$basePath/views/screen/${feature}_screen.dart', '''
+  createdAnything =
+      createFile('$basePath/views/screen/${feature}_screen.dart', '''
 import 'package:flutter/material.dart';
 
 class ${pascalFeature}Screen extends StatelessWidget {
@@ -367,14 +427,17 @@ class ${pascalFeature}Screen extends StatelessWidget {
     );
   }
 }
-''') || createdAnything;
+''') ||
+      createdAnything;
 
   if (createdAnything) {
     print(
-        '\n🚀 "$feature" ($architecture, $stateManagement) structure created at "$basePath"!');
+      '\n🚀 "$feature" ($architecture, $stateManagement) structure created at "$basePath"!',
+    );
   } else {
     print(
-        '\nℹ "$feature" ($architecture, $stateManagement) structure already exists at "$basePath". No new files or folders created.');
+      '\nℹ "$feature" ($architecture, $stateManagement) structure already exists at "$basePath". No new files or folders created.',
+    );
   }
 }
 
@@ -406,9 +469,12 @@ bool createFile(String path, String content) {
 String toPascalCase(String text) {
   return text
       .split('_')
-      .map((word) => word.isNotEmpty
-      ? '${word[0].toUpperCase()}${word.substring(1)}'
-      : '')
+      .map(
+        (word) =>
+            word.isNotEmpty
+                ? '${word[0].toUpperCase()}${word.substring(1)}'
+                : '',
+      )
       .join();
 }
 
@@ -422,7 +488,7 @@ Map<String, String> _readConfig() {
     return {
       for (var line in lines)
         if (line.contains('='))
-          line.split('=').first.trim(): line.split('=').last.trim()
+          line.split('=').first.trim(): line.split('=').last.trim(),
     };
   } catch (e) {
     print('❌ Failed to read config file $configFilePath: $e');
