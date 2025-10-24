@@ -7,7 +7,7 @@ environment:
   sdk: ^3.7.0
   flutter: ">=1.17.0"
 
-publish_to: 'none'
+publish_to: https://pub.dev
 
 executables:
   raihan_cli: raihan_cli
