@@ -1,6 +1,6 @@
 # 🚀 raihan_cli – Flutter Feature Scaffolding CLI Tool
 
-<p>`raihan_cli` is a Dart-based command-line tool designed to **automate feature creation and deletion** in Flutter projects using the **MVC** or **MVVM** architectural patterns with **GetX**, **Provider**, or **BLoC** state management. It helps developers maintain a clean and consistent project structure while saving time on repetitive boilerplate setup.</p>
+<p>`raihan_cli` is a Dart-based command-line tool designed to **automate feature creation and deletion** in Flutter projects using the **MVC** or **MVVM** architectural patterns with **GetX**, **Provider**, **Riverpod** and **BLoC** state management. It helps developers maintain a clean and consistent project structure while saving time on repetitive boilerplate setup.</p>
 
 ## 📦 Installation
 
@@ -19,7 +19,7 @@ dart pub global activate --source git https://github.com/raihansikdar/raihan_cli
 
 1. ✅ Scaffolds folders and files for new features (MVC or MVVM)
 
-2. 🛠️ Supports GetX, Provider, and BLoC state management
+2. 🛠️ Supports GetX, Provider, Riverpod and BLoC state management
 
 3. 🗑️ Removes entire feature folders safely
 
@@ -52,7 +52,11 @@ You’ll be prompted to choose:
 
 2. provider
 
-3. bloc
+3. riverpod
+
+4. bloc
+
+5. others
 
 > **Note:** You must configure the state management on the first run. The package will remember your choice.
 
