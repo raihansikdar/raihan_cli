@@ -1,1 +1,0 @@
-// Bloc event for product
