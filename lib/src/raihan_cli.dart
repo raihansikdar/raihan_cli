@@ -164,7 +164,7 @@ void runCli(List<String> args) async {
       print('\nChoose architecture:');
       print('1. mvc');
       print('2. mvvm');
-      print('3. clean');
+      print('3. clean architecture');
       stdout.write('Enter your choice (1/2/3): ');
       final input = stdin.readLineSync()?.trim();
 
@@ -208,116 +208,174 @@ void runCli(List<String> args) async {
   }
 
   // Step 5: Handle Clean Architecture
-  // ---------------------------------------------------------------
-//  ONLY THE CLEAN-ARCHITECTURE SECTION IS MODIFIED
-// ---------------------------------------------------------------
   if (architecture == 'clean') {
-    // ... folder creation stays the same ...
+    final folders = [
+      '$basePath/data/data_source',
+      '$basePath/data/model',
+      '$basePath/data/repository',
+      '$basePath/domain/entities',
+      '$basePath/domain/repository',
+      '$basePath/domain/use_case',
+      '$basePath/presentation/views/screen',
+      '$basePath/presentation/views/widgets',
+    ];
 
+    // Add state-specific folder in presentation
+    if (stateManagement == 'bloc') {
+      folders.add('$basePath/presentation/bloc');
+    } else if (stateManagement == 'provider') {
+      folders.add('$basePath/presentation/provider');
+    } else if (stateManagement == 'riverpod') {
+      folders.add('$basePath/presentation/riverpod');
+    } else {
+      folders.add('$basePath/presentation/controller'); // getx, others
+    }
+
+    for (final folder in folders) {
+      final dir = Directory(folder);
+      try {
+        if (!dir.existsSync()) {
+          dir.createSync(recursive: true);
+          print('Created: $folder');
+          createdAnything = true;
+        } else {
+          print('Already exists: $folder');
+        }
+      } catch (e) {
+        print('Failed to create folder "$folder": $e');
+        return;
+      }
+    }
+
+    // --- Create Clean Architecture Files ---
     final snakeFeature = feature.replaceAll('-', '_');
 
-    // ───── DATA LAYER ─────
+    // Data Layer
     createdAnything = createFile(
       '$basePath/data/data_source/${snakeFeature}_remote_data_source.dart',
       '''
-abstract class ${pascalFeature}RemoteDataSource {
-  Future<List<dynamic>> fetch${pascalFeature}s();   // <-- concrete method signature
-}
+  // TODO: Define remote data methods
 ''',
-    ) || createdAnything;
+    ) ||
+        createdAnything;
 
     createdAnything = createFile(
       '$basePath/data/data_source/${snakeFeature}_remote_data_source_impl.dart',
       '''
-import '${snakeFeature}_remote_data_source.dart';
-
-class ${pascalFeature}RemoteDataSourceImpl implements ${pascalFeature}RemoteDataSource {
-  @override
-  Future<List<dynamic>> fetch${pascalFeature}s() async {
-    // TODO: call your API / remote service
-    return <dynamic>[];
-  }
-}
+      // TODO: Implement remote data source
 ''',
-    ) || createdAnything;
+    ) ||
+        createdAnything;
 
     createdAnything = createFile(
       '$basePath/data/data_source/${snakeFeature}_local_data_source.dart',
       '''
-abstract class ${pascalFeature}LocalDataSource {
-  Future<void> cache${pascalFeature}s(List<dynamic> data);
-  Future<List<dynamic>> getCached${pascalFeature}s();
-}
-''',
-    ) || createdAnything;
+     // TODO: Define local data methods
 
-    // ───── DOMAIN LAYER ─────
-    createdAnything = createFile(
-      '$basePath/domain/entities/${snakeFeature}_entity.dart',
-      '''
-class ${pascalFeature}Entity {
-  // TODO: define immutable fields
-  const ${pascalFeature}Entity();
-}
 ''',
-    ) || createdAnything;
+    ) ||
+        createdAnything;
+
+    createdAnything = createFile(
+      '$basePath/data/model/${snakeFeature}_model.dart',
+      '''
+    // TODO: Define model fields
+''',
+    ) ||
+        createdAnything;
+
+    createdAnything = createFile(
+      '$basePath/data/repository/${snakeFeature}_details_repository_impl.dart',
+      '''
+  // TODO: Inject data sources and implement
+''',
+    ) ||
+        createdAnything;
+
+    // Domain Layer
+    createdAnything = createFile(
+      '$basePath/domain/entities/${snakeFeature}_entities.dart',
+      '''
+  // TODO: Define entity fields
+
+''',
+    ) ||
+        createdAnything;
 
     createdAnything = createFile(
       '$basePath/domain/repository/${snakeFeature}_repository.dart',
       '''
-abstract class ${pascalFeature}Repository {
-  Future<List<dynamic>> call();   // <-- plain Future, no Either
-}
+      // TODO: Define repository
 ''',
-    ) || createdAnything;
-
-    createdAnything = createFile(
-      '$basePath/data/repository/${snakeFeature}_repository_impl.dart',
-      '''
-import '../../domain/repository/${snakeFeature}_repository.dart';
-import '../data_source/${snakeFeature}_remote_data_source.dart';
-import '../data_source/${snakeFeature}_local_data_source.dart';
-
-class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
-  final ${pascalFeature}RemoteDataSource remote;
-  final ${pascalFeature}LocalDataSource local;
-
-  const ${pascalFeature}RepositoryImpl(this.remote, this.local);
-
-  @override
-  Future<List<dynamic>> call() async {
-    try {
-      final remoteData = await remote.fetch${pascalFeature}s();
-      await local.cache${pascalFeature}s(remoteData);
-      return remoteData;
-    } catch (e) {
-      // You can re-throw, wrap in a custom exception, or return an empty list
-      rethrow;   // <-- simple error propagation
-    }
-  }
-}
-''',
-    ) || createdAnything;
+    ) ||
+        createdAnything;
 
     createdAnything = createFile(
       '$basePath/domain/use_case/${snakeFeature}_use_case.dart',
       '''
-import '../repository/${snakeFeature}_repository.dart';
-
-class ${pascalFeature}UseCase {
-  final ${pascalFeature}Repository repository;
-
-  const ${pascalFeature}UseCase(this.repository);
-
-  Future<List<dynamic>> call() => repository();
-}
+     // TODO: Define UseCase
 ''',
-    ) || createdAnything;
+    ) ||
+        createdAnything;
 
-    // ───── PRESENTATION LAYER (state-management specific) ─────
-    // (unchanged – bloc / provider / riverpod / controller)
+    // Presentation Layer - State Management Specific
+    if (stateManagement == 'bloc') {
+      final blocPath = '$basePath/presentation/bloc';
+      createdAnything = createFile('$blocPath/${snakeFeature}_bloc.dart', '''
+      
+      // TODO: implement event handler
 
-    // ───── SCREEN ─────
+''') || createdAnything;
+
+      createdAnything = createFile('$blocPath/${snakeFeature}_event.dart', '''
+// TODO: implement event 
+''') || createdAnything;
+
+      createdAnything = createFile('$blocPath/${snakeFeature}_state.dart', '''
+// TODO: implement state 
+''') || createdAnything;
+
+    } else if (stateManagement == 'provider') {
+      createdAnything = createFile(
+        '$basePath/presentation/provider/${snakeFeature}_provider.dart',
+        '''
+  // TODO: Implement provider
+
+''',
+      ) ||
+          createdAnything;
+
+    } else if (stateManagement == 'riverpod') {
+      createdAnything = createFile(
+        '$basePath/presentation/riverpod/${snakeFeature}_notifier.dart',
+        '''
+  // TODO: Implement methods
+
+''',
+      ) ||
+          createdAnything;
+
+      createdAnything = createFile(
+        '$basePath/presentation/riverpod/${snakeFeature}_provider.dart',
+        '''
+// TODO: Implement methods
+''',
+      ) ||
+          createdAnything;
+
+    } else {
+      // getx or others
+      createdAnything = createFile(
+        '$basePath/presentation/controller/${snakeFeature}_controller.dart',
+        '''
+  // TODO: Implement controller
+
+''',
+      ) ||
+          createdAnything;
+    }
+
+    // Views
     createdAnything = createFile(
       '$basePath/presentation/views/screen/${snakeFeature}_screen.dart',
       '''
@@ -335,18 +393,19 @@ class ${pascalFeature}Screen extends StatelessWidget {
   }
 }
 ''',
-    ) || createdAnything;
+    ) ||
+        createdAnything;
 
-    // ───── INJECTION CONTAINER (optional) ─────
+    // Injection Container
     createdAnything = createFile(
       '$basePath/${snakeFeature}_injection_container.dart',
       '''
-// TODO: register dependencies with get_it, riverpod, etc.
-// Example:
-// final sl = GetIt.instance;
-// sl.registerLazySingleton<${pascalFeature}Repository>(() => ${pascalFeature}RepositoryImpl(...));
+// TODO: Setup dependency injection (get_it, etc.)
+// Example: final sl = GetIt.instance;
 ''',
-    ) || createdAnything;
+    ) ||
+        createdAnything;
+
   } else {
     // Existing MVC / MVVM Logic (Unchanged)
     List<String> folders = [
