@@ -1,0 +1,1 @@
+// Bloc state for product

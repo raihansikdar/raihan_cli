@@ -162,7 +162,7 @@ void runCli(List<String> args) async {
       print('\n🧱 Choose architecture:');
       print('1. mvc');
       print('2. mvvm');
-      print('3. clean'); // ✅ new clean architecture option
+      print('3. clean architecture'); // ✅ new clean architecture option
       stdout.write('Enter your choice (1/2/3): ');
       final input = stdin.readLineSync()?.trim();
 
@@ -271,7 +271,7 @@ class ${pascalFeature}Screen extends StatelessWidget {
   }
 }
 ''');
-    createFile('$basePath/category_injection_container.dart',
+    createFile('$basePath/${feature}_injection_container.dart',
         '// Dependency injection container for $feature\n');
 
     // State management-specific files
