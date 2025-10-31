@@ -332,14 +332,14 @@ void runCli(List<String> args) async {
     } else if (stateManagement == 'riverpod') {
       createdAnything = createFile(
         '$basePath/presentation/riverpod/${snakeFeature}_notifier.dart',
-        '''// TODO: Implement methods
+        '''// TODO: Implement notifier
 ''',
       ) ||
           createdAnything;
 
       createdAnything = createFile(
         '$basePath/presentation/riverpod/${snakeFeature}_provider.dart',
-        '''// TODO: Implement methods
+        '''// TODO: Implement provider
 ''',
       ) ||
           createdAnything;
