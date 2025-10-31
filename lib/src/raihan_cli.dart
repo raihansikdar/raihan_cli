@@ -347,7 +347,7 @@ class ${pascalFeature}Screen extends StatelessWidget {
 // sl.registerLazySingleton<${pascalFeature}Repository>(() => ${pascalFeature}RepositoryImpl(...));
 ''',
     ) || createdAnything;
-  }else {
+  } else {
     // Existing MVC / MVVM Logic (Unchanged)
     List<String> folders = [
       '$basePath/model',
