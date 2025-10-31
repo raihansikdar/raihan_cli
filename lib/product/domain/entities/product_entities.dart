@@ -1,2 +1,0 @@
-  // TODO: Define entity fields
-
