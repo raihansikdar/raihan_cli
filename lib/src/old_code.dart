@@ -28,7 +28,8 @@ void runCli(List<String> args) async {
     if (pathType == '1') {
       removePath = 'lib/src/features/$removeFeature';
     } else if (pathType == '2') {
-      removePath = (customParent == '.' || (customParent?.isEmpty ?? true))
+      removePath =
+      (customParent == '.' || (customParent?.isEmpty ?? true))
           ? 'lib/$removeFeature'
           : 'lib/$customParent/$removeFeature';
     } else {
@@ -104,7 +105,8 @@ void runCli(List<String> args) async {
   if (pathType == '1') {
     basePath = 'lib/src/features/$feature';
   } else if (pathType == '2') {
-    basePath = (customParent == '.' || (customParent?.isEmpty ?? true))
+    basePath =
+    (customParent == '.' || (customParent?.isEmpty ?? true))
         ? 'lib/$feature'
         : 'lib/$customParent/$feature';
   } else {
@@ -119,9 +121,9 @@ void runCli(List<String> args) async {
       print('\n🛠 Choose state management:');
       print('1. getx');
       print('2. provider');
-      print('3. riverpod');
-      print('4. bloc');
-      print('5. others');
+      print('3. riverpod'); // new
+      print('4. bloc'); // shifted
+      print('5. others'); // default GetX
       stdout.write('Enter your choice (1/2/3/4/5): ');
 
       final input = stdin.readLineSync()?.trim();
@@ -162,8 +164,7 @@ void runCli(List<String> args) async {
       print('\n🧱 Choose architecture:');
       print('1. mvc');
       print('2. mvvm');
-      print('3. clean'); // ✅ new clean architecture option
-      stdout.write('Enter your choice (1/2/3): ');
+      stdout.write('Enter your choice (1 or 2): ');
       final input = stdin.readLineSync()?.trim();
 
       if (input == '1') {
@@ -171,9 +172,6 @@ void runCli(List<String> args) async {
         break;
       } else if (input == '2') {
         architecture = 'mvvm';
-        break;
-      } else if (input == '3') {
-        architecture = 'clean';
         break;
       } else {
         print('❌ Invalid architecture choice. Please try again.');
@@ -205,58 +203,217 @@ void runCli(List<String> args) async {
     return;
   }
 
-  // ---------- CLEAN ARCHITECTURE LOGIC ----------
-  if (architecture == 'clean') {
-    final folders = [
-      '$basePath/data/data_source',
-      '$basePath/data/model',
-      '$basePath/data/repository',
-      '$basePath/domain/entities',
-      '$basePath/domain/repository',
-      '$basePath/domain/use_case',
-      '$basePath/presentation/views/screen',
-      '$basePath/presentation/views/widgets',
-    ];
+  // Step 5: Create folder structure based on architecture & state management
+  List<String> folders = [
+    '$basePath/model',
+    '$basePath/views/screen',
+    '$basePath/views/widget',
+  ];
 
-    // Add state management specific folders
-    if (stateManagement == 'bloc') {
-      folders.add('$basePath/presentation/bloc');
-    } else if (stateManagement == 'provider') {
-      folders.add('$basePath/presentation/provider');
-    } else if (stateManagement == 'riverpod') {
-      folders.add('$basePath/presentation/riverpod');
-    } else {
-      folders.add('$basePath/presentation/controller');
+  if (stateManagement == 'bloc') {
+    if (architecture == 'mvc') {
+      folders = ['$basePath/bloc', ...folders];
+    } else if (architecture == 'mvvm') {
+      folders = ['$basePath/bloc', '$basePath/repository', ...folders];
     }
+  } else if (stateManagement == 'provider') {
+    if (architecture == 'mvc') {
+      folders.add('$basePath/provider');
+    } else if (architecture == 'mvvm') {
+      folders.addAll(['$basePath/view_model_provider', '$basePath/repository']);
+    }
+  } else if (stateManagement == 'riverpod') {
+    if (architecture == 'mvc') {
+      folders.add('$basePath/riverpod');
+    } else if (architecture == 'mvvm') {
+      folders.addAll(['$basePath/view_model_riverpod', '$basePath/repository']);
+    }
+  } else if (architecture == 'mvc') {
+    folders.add('$basePath/controllers'); // default for getx/others
+  } else if (architecture == 'mvvm') {
+    folders.addAll([
+      '$basePath/view_model',
+      '$basePath/repository',
+    ]); // default for getx/others
+  }
 
-    for (final folder in folders) {
-      final dir = Directory(folder);
+  for (final folder in folders) {
+    final dir = Directory(folder);
+    try {
       if (!dir.existsSync()) {
         dir.createSync(recursive: true);
         print('📁 Created: $folder');
         createdAnything = true;
+      } else {
+        print('⚠ Already exists: $folder');
       }
+    } catch (e) {
+      print('❌ Failed to create folder "$folder": $e');
+      return;
     }
+  }
 
-    // Create default files
-    createFile('$basePath/data/data_source/${feature}_remote_data_source.dart',
-        '// Remote data source for $feature\n');
-    createFile(
-        '$basePath/data/data_source/${feature}_remote_data_source_impl.dart',
-        '// Remote data source implementation for $feature\n');
-    createFile('$basePath/data/data_source/${feature}_local_data_source.dart',
-        '// Local data source for $feature\n');
-    createFile('$basePath/data/model/${feature}_model.dart',
-        '// Model for $feature\n');
-    createFile('$basePath/data/repository/${feature}_details_repository_impl.dart',
-        '// Data layer repository implementation for $feature\n');
-    createFile('$basePath/domain/entities/${feature}_entities.dart',
-        '// Entities for $feature\n');
-    createFile('$basePath/domain/repository/${feature}_repository.dart',
-        '// Domain repository interface for $feature\n');
-    createFile('$basePath/domain/use_case/${feature}_use_case.dart',
-        '// Use case for $feature\n');
-    createFile('$basePath/presentation/views/screen/${feature}_screen.dart', '''
+  // Step 6: Create files
+  if (stateManagement == 'bloc') {
+    final blocFolder = '$basePath/bloc';
+    createdAnything =
+        createFile(
+          '$blocFolder/${feature}_bloc.dart',
+          '// BLoC for $feature\n',
+        ) ||
+            createdAnything;
+    createdAnything =
+        createFile(
+          '$blocFolder/${feature}_event.dart',
+          '// Event for $feature\n',
+        ) ||
+            createdAnything;
+    createdAnything =
+        createFile(
+          '$blocFolder/${feature}_state.dart',
+          '// State for $feature\n',
+        ) ||
+            createdAnything;
+
+    if (architecture == 'mvvm') {
+      final repoFolder = '$basePath/repository';
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository.dart', '''
+abstract class ${pascalFeature}Repository {
+  // Define your abstract methods here
+}
+''') ||
+              createdAnything;
+
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository_impl.dart', '''
+import '${feature}_repository.dart';
+
+class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
+  // Implement methods here
+}
+''') ||
+              createdAnything;
+    }
+  } else if (stateManagement == 'provider') {
+    if (architecture == 'mvc') {
+      createdAnything =
+          createFile(
+            '$basePath/provider/${feature}_provider.dart',
+            '// Provider for $feature (MVC with Provider)\n',
+          ) ||
+              createdAnything;
+    } else {
+      createdAnything =
+          createFile(
+            '$basePath/view_model_provider/${feature}_view_model_provider.dart',
+            '// ViewModel (Provider) for $feature\n',
+          ) ||
+              createdAnything;
+
+      final repoFolder = '$basePath/repository';
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository.dart', '''
+abstract class ${pascalFeature}Repository {
+  // Define your abstract methods here
+}
+''') ||
+              createdAnything;
+
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository_impl.dart', '''
+import '${feature}_repository.dart';
+
+class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
+  // Implement methods here
+}
+''') ||
+              createdAnything;
+    }
+  } else if (stateManagement == 'riverpod') {
+    final riverpodFolder =
+    (architecture == 'mvc')
+        ? '$basePath/riverpod'
+        : '$basePath/view_model_riverpod';
+
+    createdAnything =
+        createFile(
+          '$riverpodFolder/${feature}_notifier.dart',
+          '// Riverpod Notifier for $feature\n',
+        ) ||
+            createdAnything;
+
+    createdAnything =
+        createFile(
+          '$riverpodFolder/${feature}_provider.dart',
+          '// Riverpod Provider for $feature\n',
+        ) ||
+            createdAnything;
+
+    if (architecture == 'mvvm') {
+      final repoFolder = '$basePath/repository';
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository.dart', '''
+abstract class ${pascalFeature}Repository {
+  // Define your abstract methods here
+}
+''') ||
+              createdAnything;
+
+      createdAnything =
+          createFile('$repoFolder/${feature}_repository_impl.dart', '''
+import '${feature}_repository.dart';
+
+class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
+  // Implement methods here
+}
+''') ||
+              createdAnything;
+    }
+  } else if (architecture == 'mvc') {
+    createdAnything =
+        createFile(
+          '$basePath/controllers/${feature}_controller.dart',
+          '// Controller for $feature (MVC)\n',
+        ) ||
+            createdAnything;
+  } else if (architecture == 'mvvm') {
+    createdAnything =
+        createFile(
+          '$basePath/view_model/${feature}_view_model.dart',
+          '// ViewModel for $feature (MVVM)\n',
+        ) ||
+            createdAnything;
+
+    final repoFolder = '$basePath/repository';
+    createdAnything =
+        createFile('$repoFolder/${feature}_repository.dart', '''
+abstract class ${pascalFeature}Repository {
+  // Define your abstract methods here
+}
+''') ||
+            createdAnything;
+
+    createdAnything =
+        createFile('$repoFolder/${feature}_repository_impl.dart', '''
+import '${feature}_repository.dart';
+
+class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
+  // Implement methods here
+}
+''') ||
+            createdAnything;
+  }
+
+  createdAnything =
+      createFile(
+        '$basePath/model/${feature}_model.dart',
+        '// Model for $feature\n',
+      ) ||
+          createdAnything;
+
+  createdAnything =
+      createFile('$basePath/views/screen/${feature}_screen.dart', '''
 import 'package:flutter/material.dart';
 
 class ${pascalFeature}Screen extends StatelessWidget {
@@ -270,41 +427,18 @@ class ${pascalFeature}Screen extends StatelessWidget {
     );
   }
 }
-''');
-    createFile('$basePath/category_injection_container.dart',
-        '// Dependency injection container for $feature\n');
+''') ||
+          createdAnything;
 
-    // State management-specific files
-    if (stateManagement == 'bloc') {
-      createFile('$basePath/presentation/bloc/${feature}_bloc.dart',
-          '// Bloc for $feature\n');
-      createFile('$basePath/presentation/bloc/${feature}_event.dart',
-          '// Bloc event for $feature\n');
-      createFile('$basePath/presentation/bloc/${feature}_state.dart',
-          '// Bloc state for $feature\n');
-    } else if (stateManagement == 'provider') {
-      createFile('$basePath/presentation/provider/${feature}_provider.dart',
-          '// Provider for $feature\n');
-    } else if (stateManagement == 'riverpod') {
-      createFile('$basePath/presentation/riverpod/${feature}_notifier.dart',
-          '// Riverpod notifier for $feature\n');
-      createFile('$basePath/presentation/riverpod/${feature}_provider.dart',
-          '// Riverpod provider for $feature\n');
-    } else {
-      createFile('$basePath/presentation/controller/${feature}_controller.dart',
-          '// Controller for $feature\n');
-    }
-
+  if (createdAnything) {
     print(
-        '\n🚀 "$feature" (Clean Architecture, $stateManagement) structure created at "$basePath"!');
-    return;
+      '\n🚀 "$feature" ($architecture, $stateManagement) structure created at "$basePath"!',
+    );
+  } else {
+    print(
+      '\nℹ "$feature" ($architecture, $stateManagement) structure already exists at "$basePath". No new files or folders created.',
+    );
   }
-
-  // ---------- ORIGINAL MVC + MVVM LOGIC ----------
-  // (Everything below remains unchanged)
-  // ...
-  // [your previous folder/file creation logic remains same for mvc & mvvm]
-  // ...
 }
 
 // ---------------- Helper Functions ----------------
@@ -335,8 +469,12 @@ bool createFile(String path, String content) {
 String toPascalCase(String text) {
   return text
       .split('_')
-      .map((word) =>
-  word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : '')
+      .map(
+        (word) =>
+    word.isNotEmpty
+        ? '${word[0].toUpperCase()}${word.substring(1)}'
+        : '',
+  )
       .join();
 }
 
