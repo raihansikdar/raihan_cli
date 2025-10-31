@@ -866,7 +866,7 @@ void runCli(List<String> args) async {
       print('\nChoose architecture:');
       print('1. mvc');
       print('2. mvvm');
-      print('3. clean');
+      print('3. clean architecture');
       stdout.write('Enter your choice (1/2/3): ');
       final input = stdin.readLineSync()?.trim();
 
