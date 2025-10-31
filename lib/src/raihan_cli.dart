@@ -253,41 +253,35 @@ void runCli(List<String> args) async {
     // Data Layer
     createdAnything = createFile(
       '$basePath/data/data_source/${snakeFeature}_remote_data_source.dart',
-      '''
-  // TODO: Define remote data methods
+      '''// TODO: Define remote data methods
 ''',
     ) ||
         createdAnything;
 
     createdAnything = createFile(
       '$basePath/data/data_source/${snakeFeature}_remote_data_source_impl.dart',
-      '''
-      // TODO: Implement remote data source
+      '''// TODO: Implement remote data source
 ''',
     ) ||
         createdAnything;
 
     createdAnything = createFile(
       '$basePath/data/data_source/${snakeFeature}_local_data_source.dart',
-      '''
-     // TODO: Define local data methods
-
+      '''// TODO: Define local data methods
 ''',
     ) ||
         createdAnything;
 
     createdAnything = createFile(
       '$basePath/data/model/${snakeFeature}_model.dart',
-      '''
-    // TODO: Define model fields
+      '''// TODO: Define model fields
 ''',
     ) ||
         createdAnything;
 
     createdAnything = createFile(
       '$basePath/data/repository/${snakeFeature}_details_repository_impl.dart',
-      '''
-  // TODO: Inject data sources and implement
+      '''// TODO: Inject data sources and implement
 ''',
     ) ||
         createdAnything;
@@ -295,25 +289,21 @@ void runCli(List<String> args) async {
     // Domain Layer
     createdAnything = createFile(
       '$basePath/domain/entities/${snakeFeature}_entities.dart',
-      '''
-  // TODO: Define entity fields
-
+      '''// TODO: Define entity fields
 ''',
     ) ||
         createdAnything;
 
     createdAnything = createFile(
       '$basePath/domain/repository/${snakeFeature}_repository.dart',
-      '''
-      // TODO: Define repository
+      '''// TODO: Define repository
 ''',
     ) ||
         createdAnything;
 
     createdAnything = createFile(
       '$basePath/domain/use_case/${snakeFeature}_use_case.dart',
-      '''
-     // TODO: Define UseCase
+      '''// TODO: Define UseCase
 ''',
     ) ||
         createdAnything;
@@ -321,25 +311,19 @@ void runCli(List<String> args) async {
     // Presentation Layer - State Management Specific
     if (stateManagement == 'bloc') {
       final blocPath = '$basePath/presentation/bloc';
-      createdAnything = createFile('$blocPath/${snakeFeature}_bloc.dart', '''
-      
-      // TODO: implement event handler
-
+      createdAnything = createFile('$blocPath/${snakeFeature}_bloc.dart', '''// TODO: implement event handler
 ''') || createdAnything;
 
-      createdAnything = createFile('$blocPath/${snakeFeature}_event.dart', '''
-// TODO: implement event 
+      createdAnything = createFile('$blocPath/${snakeFeature}_event.dart', '''// TODO: implement event 
 ''') || createdAnything;
 
-      createdAnything = createFile('$blocPath/${snakeFeature}_state.dart', '''
-// TODO: implement state 
+      createdAnything = createFile('$blocPath/${snakeFeature}_state.dart', '''// TODO: implement state 
 ''') || createdAnything;
 
     } else if (stateManagement == 'provider') {
       createdAnything = createFile(
         '$basePath/presentation/provider/${snakeFeature}_provider.dart',
-        '''
-  // TODO: Implement provider
+        '''// TODO: Implement provider
 
 ''',
       ) ||
@@ -348,17 +332,14 @@ void runCli(List<String> args) async {
     } else if (stateManagement == 'riverpod') {
       createdAnything = createFile(
         '$basePath/presentation/riverpod/${snakeFeature}_notifier.dart',
-        '''
-  // TODO: Implement methods
-
+        '''// TODO: Implement methods
 ''',
       ) ||
           createdAnything;
 
       createdAnything = createFile(
         '$basePath/presentation/riverpod/${snakeFeature}_provider.dart',
-        '''
-// TODO: Implement methods
+        '''// TODO: Implement methods
 ''',
       ) ||
           createdAnything;
@@ -367,9 +348,7 @@ void runCli(List<String> args) async {
       // getx or others
       createdAnything = createFile(
         '$basePath/presentation/controller/${snakeFeature}_controller.dart',
-        '''
-  // TODO: Implement controller
-
+        ''' // TODO: Implement controller
 ''',
       ) ||
           createdAnything;
