@@ -280,8 +280,13 @@ void runCli(List<String> args) async {
         createdAnything;
 
     createdAnything = createFile(
-      '$basePath/data/repository/${snakeFeature}_details_repository_impl.dart',
-      '''// TODO: Inject data sources and implement
+      '$basePath/data/repository/${snakeFeature}_repository_impl.dart',
+      '''
+import '${feature}_repository.dart';
+
+class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
+  // Implement repository methods here
+}
 ''',
     ) ||
         createdAnything;
@@ -296,7 +301,9 @@ void runCli(List<String> args) async {
 
     createdAnything = createFile(
       '$basePath/domain/repository/${snakeFeature}_repository.dart',
-      '''// TODO: Define repository
+      '''abstract class ${pascalFeature}Repository {
+    // TODO: Define your abstract methods here
+}
 ''',
     ) ||
         createdAnything;
@@ -324,7 +331,6 @@ void runCli(List<String> args) async {
       createdAnything = createFile(
         '$basePath/presentation/provider/${snakeFeature}_provider.dart',
         '''// TODO: Implement provider
-
 ''',
       ) ||
           createdAnything;

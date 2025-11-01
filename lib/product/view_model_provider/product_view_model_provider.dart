@@ -1,0 +1,1 @@
+// ViewModel (Provider) for product
