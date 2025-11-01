@@ -282,7 +282,7 @@ void runCli(List<String> args) async {
     createdAnything = createFile(
       '$basePath/data/repository/${snakeFeature}_repository_impl.dart',
       '''
-import '${feature}_repository.dart';
+import 'package:$basePath/domain/repository/${feature}_repository.dart';
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   // Implement repository methods here
