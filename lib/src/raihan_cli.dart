@@ -228,7 +228,7 @@ void runCli(List<String> args) async {
     } else if (stateManagement == 'riverpod') {
       folders.add('$basePath/presentation/riverpod');
     } else {
-      folders.add('$basePath/presentation/controller'); // getx, others
+      folders.add('$basePath/presentation/controller');
     }
 
     for (final folder in folders) {
@@ -282,7 +282,8 @@ void runCli(List<String> args) async {
     createdAnything = createFile(
       '$basePath/data/repository/${snakeFeature}_repository_impl.dart',
       '''
-import '../../domain/repository/${snakeFeature}_repository.dart';
+//import '../../domain/repository/${snakeFeature}_repository.dart';
+import '${snakeFeature}_repository.dart'
 
 class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
   // Implement repository methods here
@@ -396,7 +397,7 @@ class ${pascalFeature}Screen extends StatelessWidget {
     List<String> folders = [
       '$basePath/model',
       '$basePath/views/screen',
-      '$basePath/views/widget',
+      '$basePath/views/widgets',
     ];
 
     if (stateManagement == 'bloc') {
