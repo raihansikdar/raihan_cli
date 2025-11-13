@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [2.0.0] - 2025-10-24
+## [2.0.0] - 2025-11-13
 
 ## ✨ Enhancements
 - 🛠 **State Management Support**

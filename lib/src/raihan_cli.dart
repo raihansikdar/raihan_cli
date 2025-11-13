@@ -1,7 +1,40 @@
+/// ---------------------------------------------
+/// 🧩 raihan_cli.dart
+/// ---------------------------------------------
+/// A Dart CLI utility for generating **clean Flutter feature folders**
+/// following **MVC**, **MVVM**, or **Clean Architecture** structures.
+///
+/// 🔹 Supports multiple state management systems:
+///   - GetX
+///   - Provider
+///   - Riverpod
+///   - BLoC
+///
+/// 🔹 Key Features:
+///   • Interactive prompts for architecture, state management, and folder path
+///   • Automatic folder and boilerplate file creation
+///   • Supports feature removal (`remove <feature_name>`)
+///   • Saves your configuration in `tool/.cli_architecture_config`
+///
+/// ---------------------------------------------
+
+
 import 'dart:io';
 
+/// The configuration file path used by raihan_cli.
 const configFilePath = 'tool/.cli_architecture_config';
 
+/// The main function that runs the CLI tool.
+///
+/// Handles user input for feature creation and removal, and manages
+/// folder generation based on selected architecture and state management.
+///
+/// - [args] : List of command-line arguments provided by the user.
+///   Example:
+///   ```bash
+///   dart run tool/raihan_cli.dart login
+///   dart run tool/raihan_cli.dart remove login
+///   ```
 void runCli(List<String> args) async {
   if (args.isEmpty) {
     print(

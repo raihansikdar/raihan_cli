@@ -1,5 +1,5 @@
 name: raihan_cli
-description: "raihan_cli generates clean Flutter feature folders with MVC or MVVM architecture, supporting GetX, Provider, Riverpod, and BLoC state management."
+description: "raihan_cli generates clean Flutter feature folders with Clean Architecture principles, supporting MVC and MVVM patterns, and integrates seamlessly with GetX, Provider, Riverpod, and BLoC state management."
 version: 2.0.0
 homepage: https://github.com/raihansikdar/raihan_cli
 
