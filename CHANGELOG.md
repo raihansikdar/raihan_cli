@@ -6,7 +6,41 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [2.0.0] - 2025-11-13
+## [2.1.0] - 2025-11-15
+
+## ✨ New Feature — Clean Architecture Support
+- 🏛 **Clean Architecture Added**
+    - CLI now supports full **Clean Architecture** scaffolding.
+    - Generates layered structure:
+        - `domain` → entities, repositories, use cases
+        - `data` → models, repository implementations, data sources
+        - `presentation` → UI, controllers/state management
+    - Architecture adapts automatically based on selected **state management** (GetX, Provider, BLoC, Riverpod).
+
+- 📁 **Clean Architecture + State Management Integration**
+    - **BLoC** → auto-generates bloc, event, state under `presentation/`.
+    - **Riverpod** → generates notifier + provider following domain-driven design.
+    - **GetX** → controller generation with injected use cases.
+    - **Provider** → ChangeNotifier generated using domain layer use cases.
+
+- 🛠 **CLI Updates**
+    - Added **Clean Architecture** as a new selectable architecture option.
+    - Automatically creates layer-specific folders:
+        - `domain/usecases/`
+        - `domain/repositories/`
+        - `data/datasources/`
+        - `data/repositories/`
+        - `presentation/screens/`
+        - `presentation/controllers/`
+    - Enhanced validation for feature names and duplicate layer checks.
+
+## 🧱 Code Quality
+- Modularized architecture generation logic.
+- Separated MVC, MVVM, and Clean Architecture generators.
+- Reduced duplicate file creation by implementing shared utilities.
+
+
+## [2.0.0] - 2025-10-24
 
 ## ✨ Enhancements
 - 🛠 **State Management Support**
