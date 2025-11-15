@@ -1,4 +1,4 @@
 pathType=2
 customPath=.
-stateManagement=bloc
-architecture=clean
+stateManagement=riverpod
+architecture=mvvm

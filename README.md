@@ -147,7 +147,7 @@ lib/src/features/<feature_name>/      # if custom path is "features"
 
 ```
 lib/src/features/<feature_name>/      
-├── provider/
+├── riverpod/
 │   ├── <feature_name>_notifier.dart      # StateNotifier / AsyncNotifier class
 │   └── <feature_name>_provider.dart      # Riverpod provider exposing the notifier
 ├── model/
@@ -217,7 +217,7 @@ lib/features/<feature_name>/       # if custom path is "features"
 
 ```
 lib/features/<feature_name>/           
-├── view_model_provider/
+├── view_model_riverpod/
 │   ├── <feature_name>_notifier.dart      # StateNotifier / AsyncNotifier class
 │   └── <feature_name>_provider.dart      # Riverpod provider exposing the notifier
 ├── repository/
