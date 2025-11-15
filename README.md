@@ -252,7 +252,127 @@ lib/features/<feature_name>/      # if custom path is "features"
 
 ```
 
+## 📁 Clean Architecture Folder Structure
 
+### 📁 Clean Architecture + GetX
+
+```
+lib/features/<feature_name>/        # if custom path is "features"/
+├── data/
+│   ├── data_source/
+│   │   ├── <feature_name>_remote_data_source.dart
+│   │   └── <feature_name>_remote_data_source_impl.dart
+│   ├── model/
+│   │   └── <feature_name>_model.dart
+│   └── repository/
+│       └── <feature_name>_repository_impl.dart
+├── domain/
+│   ├── entities/
+│   │   └── <feature_name>_entities.dart
+│   ├── repository/
+│   │   └── <feature_name>_repository.dart
+│   └── use_case/
+│       └── <feature_name>_use_case.dart
+├── presentation/
+│   ├── controller/
+│   │   └── <feature_name>_controller.dart
+│   └── views/
+│       ├── screen/
+│       │   └── <feature_name>_screen.dart
+│       └── widgets
+└── <feature_name>_dependency_injection.dart
+```
+
+### 📁 Clean Architecture + Provider
+```
+lib/features/<feature_name>/        # if custom path is "features"/
+├── data/
+│   ├── data_source/
+│   │   ├── <feature_name>_remote_data_source.dart
+│   │   └── <feature_name>_remote_data_source_impl.dart
+│   ├── model/
+│   │   └── <feature_name>_model.dart
+│   └── repository/
+│       └── <feature_name>_repository_impl.dart
+├── domain/
+│   ├── entities/
+│   │   └── <feature_name>_entities.dart
+│   ├── repository/
+│   │   └── <feature_name>_repository.dart
+│   └── use_case/
+│       └── <feature_name>_use_case.dart
+├── presentation/
+│   ├── provider/
+│   │   └── <feature_name>_provider.dart
+│   └── views/
+│       ├── screen/
+│       │   └── <feature_name>_screen.dart
+│       └── widgets
+└── <feature_name>_dependency_injection.dart
+
+```
+
+### 📁 Clean Architecture + Riverpod
+```
+lib/features/<feature_name>/        # if custom path is "features"/
+├── data/
+│   ├── data_source/
+│   │   ├── <feature_name>_remote_data_source.dart
+│   │   └── <feature_name>_remote_data_source_impl.dart
+│   ├── model/
+│   │   └── <feature_name>_model.dart
+│   └── repository/
+│       └── <feature_name>_repository_impl.dart
+├── domain/
+│   ├── entities/
+│   │   └── <feature_name>_entities.dart
+│   ├── repository/
+│   │   └── <feature_name>_repository.dart
+│   └── use_case/
+│       └── <feature_name>_use_case.dart
+├── presentation/
+│   ├── riverpod/
+│   │   ├── <feature_name>_notifier.dart 
+│   │   └── <feature_name>_provider.dart 
+│   └── views/
+│       ├── screen/
+│       │   └── <feature_name>_screen.dart
+│       └── widgets
+└── <feature_name>_dependency_injection.dart
+
+```
+
+
+### 📁 Clean Architecture + BLoC
+```
+lib/features/<feature_name>/        # if custom path is "features"/
+├── data/
+│   ├── data_source/
+│   │   ├── <feature_name>_remote_data_source.dart
+│   │   └── <feature_name>_remote_data_source_impl.dart
+│   ├── model/
+│   │   └── <feature_name>_model.dart
+│   └── repository/
+│       └── <feature_name>_repository_impl.dart
+├── domain/
+│   ├── entities/
+│   │   └── <feature_name>_entities.dart
+│   ├── repository/
+│   │   └── <feature_name>_repository.dart
+│   └── use_case/
+│       └── <feature_name>_use_case.dart
+├── presentation/
+│   ├── bloc/
+│   │   ├── <feature_name>_bloc.dart
+│   │   ├── <feature_name>_event.dart
+│   │   └── <feature_name>_state.dart
+│   └── views/
+│       ├── screen/
+│       │   └── <feature_name>_screen.dart
+│       └── widgets
+└── <feature_name>_dependency_injection.dart
+
+```
 
 
 ##  👨‍💻 Author
