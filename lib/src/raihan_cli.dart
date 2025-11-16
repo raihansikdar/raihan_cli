@@ -416,7 +416,7 @@ class ${pascalFeature}Screen extends StatelessWidget {
 
     // Injection Container
     createdAnything = createFile(
-      '$basePath/${snakeFeature}_injection_container.dart',
+      '$basePath/${snakeFeature}_dependency_injection.dart',
       '''
 // TODO: Setup dependency injection (get_it, etc.)
 // Example: final sl = GetIt.instance;
