@@ -17,7 +17,7 @@ dart pub global activate --source git https://github.com/raihansikdar/raihan_cli
 
 ## 📁 What It Does
 
-1. ✅ Scaffolds folders and files for new features (MVC or MVVM)
+1. ✅ Scaffolds folders and files for new features (Clean Architecture, MVC and MVVM)
 
 2. 🛠️ Supports GetX, Provider, Riverpod and BLoC state management
 
@@ -64,7 +64,8 @@ You’ll be prompted to choose:
 
 1. mvc
 
-2. mvvm
+2. mvvm 
+3. clean architecture
 
 
 > **Note:** You must configure Architecture on the first run. The tool will remember your choice.
@@ -123,7 +124,7 @@ lib/src/features/<feature_name>/    # if custom path is "features"
 └── views/
     ├── screen/
     │   └── <feature_name>_screen.dart
-    └── widget/
+    └── widgets/
 
 ```
 
@@ -138,7 +139,7 @@ lib/src/features/<feature_name>/      # if custom path is "features"
 └── views/
     ├── screen/
     │   └── <feature_name>_screen.dart
-    └── widget/
+    └── widgets/
 
 ```
 
@@ -155,7 +156,7 @@ lib/src/features/<feature_name>/
 └── views/
     ├── screen/
     │   └── <feature_name>_screen.dart
-    └── widget/
+    └── widgets/
     
 ```
 
@@ -172,7 +173,7 @@ lib/src/features/<feature_name>/       # if custom path is "features"
 └── views/
     ├── screen/
     │   └── <feature_name>_screen.dart
-    └── widget/
+    └── widgets/
 
 ```
 
@@ -191,7 +192,7 @@ lib/features/<feature_name>/     # if custom path is "features"
 └── views/
     ├── screen/
     │   └── <feature_name>_screen.dart
-    └── widget/
+    └── widgets/
 
 ```
 
@@ -209,7 +210,7 @@ lib/features/<feature_name>/       # if custom path is "features"
 └── views/
     ├── screen/
     │   └── <feature_name>_screen.dart
-    └── widget/
+    └── widgets/
 
 ```
 
@@ -228,7 +229,7 @@ lib/features/<feature_name>/
 └── views/
     ├── screen/
     │   └── <feature_name>_screen.dart
-    └── widget/
+    └── widgets/
 
 ```
 
@@ -248,7 +249,7 @@ lib/features/<feature_name>/      # if custom path is "features"
 └── views/
     ├── screen/
     │   └── <feature_name>_screen.dart
-    └── widget/
+    └── widgets/
 
 ```
 

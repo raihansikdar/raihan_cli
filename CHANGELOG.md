@@ -34,7 +34,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
         - `presentation/controllers/`
     - Enhanced validation for feature names and duplicate layer checks.
 
-## 🧱 Code Quality
+## 🛠️ Code Quality
 - Modularized architecture generation logic.
 - Separated MVC, MVVM, and Clean Architecture generators.
 - Reduced duplicate file creation by implementing shared utilities.
