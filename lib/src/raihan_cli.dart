@@ -502,7 +502,7 @@ class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
       if (architecture == 'mvc') {
         createdAnything = createFile('$basePath/provider/${feature}_provider.dart', '// Provider for $feature (MVC with Provider)\n') || createdAnything;
       } else {
-        createdAnything = createFile('$basePath/view_model_provider/${feature}_view_model_provider.dart', '// ViewModel (Provider) for $feature\n') || createdAnything;
+        createdAnything = createFile('$basePath/provider/${feature}_provider.dart', '// ViewModel (Provider) for $feature\n') || createdAnything;
 
         final repoFolder = '$basePath/repository';
         createdAnything = createFile('$repoFolder/${feature}_repository.dart', '''
@@ -520,7 +520,7 @@ class ${pascalFeature}RepositoryImpl implements ${pascalFeature}Repository {
 ''') || createdAnything;
       }
     } else if (stateManagement == 'riverpod') {
-      final riverpodFolder = (architecture == 'mvc') ? '$basePath/riverpod' : '$basePath/view_model_riverpod';
+      final riverpodFolder = (architecture == 'mvc') ? '$basePath/riverpod' : '$basePath/riverpod';
       createdAnything = createFile('$riverpodFolder/${feature}_notifier.dart', '// Riverpod Notifier for $feature\n') || createdAnything;
       createdAnything = createFile('$riverpodFolder/${feature}_provider.dart', '// Riverpod Provider for $feature\n') || createdAnything;
 
