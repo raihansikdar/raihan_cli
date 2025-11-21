@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [2.1.0] - 2025-11-15
+## [2.1.0] - 2025-11-21
 
 ## ✨ New Feature — Clean Architecture Support
 - 🏛 **Clean Architecture Added**
