@@ -442,13 +442,13 @@ class ${pascalFeature}Screen extends StatelessWidget {
       if (architecture == 'mvc') {
         folders.add('$basePath/provider');
       } else if (architecture == 'mvvm') {
-        folders.addAll(['$basePath/view_model_provider', '$basePath/repository']);
+        folders.addAll(['$basePath/provider', '$basePath/repository']);
       }
     } else if (stateManagement == 'riverpod') {
       if (architecture == 'mvc') {
         folders.add('$basePath/riverpod');
       } else if (architecture == 'mvvm') {
-        folders.addAll(['$basePath/view_model_riverpod', '$basePath/repository']);
+        folders.addAll(['$basePath/riverpod', '$basePath/repository']);
       }
     } else if (architecture == 'mvc') {
       folders.add('$basePath/controllers');
